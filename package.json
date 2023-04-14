@@ -1,0 +1,22 @@
+{
+  "name": "simple-todo",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "@antfu/eslint-config": "^0.38.4",
+    "eslint": "^8.38.0",
+    "naive-ui": "^2.34.3"
+  },
+  "devDependencies": {
+    "@unocss/nuxt": "^0.51.4",
+    "nuxt": "^3.4.1"
+  }
+}
