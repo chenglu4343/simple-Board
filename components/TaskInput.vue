@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { NInput } from 'naive-ui'
-import type { Task } from '~/types'
+import type { TaskType } from '~/types'
+import { createTask } from '~/utils/createType'
 
 const emits = defineEmits<{
-  (e: 'addTask', task: Task): void
+  (e: 'addTask', task: TaskType): void
 }>()
 
 const taskInputVal = ref('')

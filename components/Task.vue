@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { NCheckbox } from 'naive-ui'
-import type { Task } from '~/types'
+import type { TaskType } from '~/types'
 
 const props = defineProps<{
-  task: Task
+  task: TaskType
 }>()
 
 const emits = defineEmits<{
-  (e: 'update:task', task: Task): void
+  (e: 'update:task', task: TaskType): void
 }>()
 
 function handleTaskStatusChange(val: boolean) {

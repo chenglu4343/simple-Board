@@ -1,7 +1,7 @@
 import { createGroup } from './createType'
-import type { List, Task } from '~/types'
+import type { ListType, TaskType } from '~/types'
 
-export function addTask2List(list: List, task: Task) {
+export function addTask2List(list: ListType, task: TaskType) {
   if (list.groups.length === 0)
     list.groups.push(createGroup())
 

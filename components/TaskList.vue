@@ -1,17 +1,16 @@
 <script setup lang="ts">
 import Draggable from 'vuedraggable'
-import TaskCom from './Task.vue'
-import type { Task } from '~/types'
+import type { TaskType } from '~/types'
 
 const props = defineProps<{
-  tasks: Task[]
+  tasks: TaskType[]
 }>()
 
 const emits = defineEmits<{
-  (e: 'update:tasks', tasks: Task[]): void
+  (e: 'update:tasks', tasks: TaskType[]): void
 }>()
 
-function handleTaskChange(task: Task, index: number) {
+function handleTaskChange(task: TaskType, index: number) {
   const newTasks = [...props.tasks]
   newTasks[index] = task
   emits('update:tasks', newTasks)
@@ -21,7 +20,7 @@ function handleTaskChange(task: Task, index: number) {
 <template>
   <Draggable :model-value="props.tasks" item-key="index" @update:model-value="(val) => emits('update:tasks', val)">
     <template #item="{ element, index }">
-      <TaskCom :task="element" @update:task="(val) => handleTaskChange(val, index)" />
+      <Task :task="element" @update:task="(val) => handleTaskChange(val, index)" />
     </template>
   </Draggable>
 </template>

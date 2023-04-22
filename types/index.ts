@@ -1,14 +1,14 @@
-export interface List {
+export interface ListType {
   title: string
-  groups: Group[]
+  groups: GroupType[]
 }
 
-export interface Group {
+export interface GroupType {
   title: string
-  tasks: Task[]
+  tasks: TaskType[]
 }
 
-export interface Task {
+export interface TaskType {
   title: string
   content: string
   status: 'todo' | 'done'

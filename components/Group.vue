@@ -1,20 +1,19 @@
 <script setup lang="ts">
-import TaskList from './TaskList.vue'
-import type { Group, Task } from '~/types'
+import type { GroupType, TaskType } from '~/types'
 
 const props = defineProps<{
-  group: Group
+  group: GroupType
 }>()
 
 const emits = defineEmits<{
-  (e: 'update:group', group: Group): void
+  (e: 'update:group', group: GroupType): void
 }>()
 
-function handleTasksChange(tasks: Task[]) {
+function handleTasksChange(tasks: TaskType[]) {
   emits('update:group', { ...props.group, tasks })
 }
 
-function handleAddTask(task: Task) {
+function handleAddTask(task: TaskType) {
   emits('update:group', { ...props.group, tasks: [task, ...props.group.tasks] })
 }
 </script>

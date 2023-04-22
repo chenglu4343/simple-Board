@@ -2,24 +2,22 @@
 import { NButton, NSwitch } from 'naive-ui'
 import Draggable from 'vuedraggable'
 import { useListMode } from './composables/useListMode'
-import type { Group, List, Task } from '~/types'
+import type { GroupType, ListType, TaskType } from '~/types'
 import { createList } from '~/utils/createType'
-import TaskList from '~/components/TaskList.vue'
-import GroupCom from '~/components/Group.vue'
 
 const { isBoard, isList, handleSwitchModeChange } = useListMode()
 
-const list = ref<List>(createList())
+const list = ref<ListType>(createList())
 
 function handleAddGroup() {
   list.value.groups.push(createGroup())
 }
 
-function handleGroupChange(group: Group, index: number) {
+function handleGroupChange(group: GroupType, index: number) {
   list.value.groups[index] = group
 }
 
-function handleAddTask(task: Task) {
+function handleAddTask(task: TaskType) {
   addTask2List(list.value, task)
 }
 </script>
@@ -40,7 +38,7 @@ function handleAddTask(task: Task) {
     <template v-else-if="isBoard">
       <Draggable v-model="list.groups" class="group-container" item-key="index">
         <template #item="{ element, index }">
-          <GroupCom :group="element" @update:group="(val) => handleGroupChange(val, index)" />
+          <Group :group="element" @update:group="(val) => handleGroupChange(val, index)" />
         </template>
         <template #footer>
           <NButton type="primary" @click="handleAddGroup">
