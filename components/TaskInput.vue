@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { NInput } from 'naive-ui'
 import type { TaskType } from '~/types'
 import { createTask } from '~/utils/createType'
 

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { NCheckbox } from 'naive-ui'
 import type { TaskType } from '~/types'
 
 const props = defineProps<{

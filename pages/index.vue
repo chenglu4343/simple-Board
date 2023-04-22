@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { NButton, NSwitch } from 'naive-ui'
 import Draggable from 'vuedraggable'
 import { useListMode } from './composables/useListMode'
 import type { GroupType, ListType, TaskType } from '~/types'

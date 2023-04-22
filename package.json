@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@unocss/nuxt": "^0.51.4",
-    "nuxt": "^3.4.1"
+    "nuxt": "^3.4.1",
+    "unplugin-vue-components": "^0.24.1"
   }
 }

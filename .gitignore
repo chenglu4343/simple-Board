@@ -1,2 +1,4 @@
 node_modules
 .nuxt
+
+types/vue-components.d.ts
