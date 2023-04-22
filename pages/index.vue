@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { NInput, NSwitch } from 'naive-ui'
 import { useListMode } from './composables/useListMode'
-import type { List, Task } from '~/types'
+import type { List } from '~/types'
 import { createList } from '~/utils/createType'
-import TaskCom from '~/components/Task.vue'
+import TaskList from '~/components/TaskList.vue'
 
 const { isBoard, isList, handleSwithModeChange } = useListMode()
 
@@ -16,10 +16,6 @@ function handleTitleInputEnter() {
 
   addTask2List(list.value, createTask(titleInput.value))
   titleInput.value = ''
-}
-
-function handleTaskChange(task: Task, index: number) {
-  list.value.groups[0].tasks[index] = task
 }
 </script>
 
@@ -38,12 +34,7 @@ function handleTaskChange(task: Task, index: number) {
     />
 
     <template v-if="isList && list.groups.length === 1">
-      <TaskCom
-        v-for="(task, index) of list.groups[0].tasks"
-        :key="index"
-        :task="task"
-        @update:task="(val) => handleTaskChange(val, index)"
-      />
+      <TaskList v-model:tasks="list.groups[0].tasks" />
     </template>
   </main>
 </template>
