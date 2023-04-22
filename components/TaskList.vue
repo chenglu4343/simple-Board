@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Draggable from 'vuedraggable'
 import type { TaskType } from '~/types'
+import Task from '~/components/Task.vue'
 
 const props = defineProps<{
   tasks: TaskType[]

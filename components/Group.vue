@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { GroupType, TaskType } from '~/types'
+import TaskInput from '~/components/TaskInput.vue'
+import TaskList from '~/components/TaskList.vue'
 
 const props = defineProps<{
   group: GroupType
