@@ -3,7 +3,7 @@ export function useListMode() {
   const isList = computed(() => mode.value === 'list')
   const isBoard = computed(() => mode.value === 'board')
 
-  const handleSwithModeChange = (val: boolean) => {
+  const handleSwitchModeChange = (val: boolean) => {
     mode.value = val ? 'board' : 'list'
   }
 
@@ -11,6 +11,6 @@ export function useListMode() {
     mode,
     isList,
     isBoard,
-    handleSwithModeChange,
+    handleSwitchModeChange,
   }
 }

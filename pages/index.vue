@@ -5,7 +5,7 @@ import type { List } from '~/types'
 import { createList } from '~/utils/createType'
 import TaskList from '~/components/TaskList.vue'
 
-const { isBoard, isList, handleSwithModeChange } = useListMode()
+const { isBoard, isList, handleSwitchModeChange } = useListMode()
 
 const titleInput = ref('')
 const list = ref<List>(createList())
@@ -23,7 +23,7 @@ function handleTitleInputEnter() {
   <main class="p-2">
     <header>
       {{ isBoard ? '看板模式' : '清单模式' }}
-      <NSwitch :value="isBoard" :on-update-value="handleSwithModeChange" />
+      <NSwitch :value="isBoard" :on-update-value="handleSwitchModeChange" />
     </header>
 
     <NInput
