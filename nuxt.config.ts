@@ -6,6 +6,7 @@ export default defineNuxtConfig({
   modules: [
     '@unocss/nuxt',
     '@vueuse/nuxt',
+    '@vue-macros/nuxt',
   ],
   css: [
     'normalize.css',
