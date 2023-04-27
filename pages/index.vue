@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { NScrollbar } from 'naive-ui'
 import Draggable from 'vuedraggable'
 import { useListMode } from './composables/useListMode'
 import type { GroupType, ListType, TaskType } from '~/types'
@@ -25,7 +26,12 @@ function handleAddTask(task: TaskType) {
 </script>
 
 <template>
-  <main class="p-2">
+  <main
+    class="p-2 h-100vh box-border bg-gray-1 grid" :class="{
+      'grid-rows-[auto_auto_1fr]': isList,
+      'grid-rows-[auto_1fr]': isBoard,
+    }"
+  >
     <header>
       {{ isBoard ? '看板模式' : '清单模式' }}
       <NSwitch :value="isBoard" :on-update-value="handleSwitchModeChange" />
@@ -38,24 +44,22 @@ function handleAddTask(task: TaskType) {
     </template>
 
     <template v-else-if="isBoard">
-      <Draggable v-model="list.groups" class="group-container" item-key="index">
-        <template #item="{ element, index }">
-          <Group :group="element" task-list-group="list-group" @update:group="(val) => handleGroupChange(val, index)" />
-        </template>
-        <template #footer>
-          <NButton type="primary" @click="handleAddGroup">
-            添加分组
-          </NButton>
-        </template>
-      </Draggable>
+      <NScrollbar x-scrollable>
+        <Draggable
+          v-model="list.groups"
+          class="flex items-start gap-2 flex-nowrap mt-2"
+          item-key="index"
+        >
+          <template #item="{ element, index }">
+            <Group :group="element" task-list-group="list-group" class="min-w-60 max-w-60" @update:group="(val) => handleGroupChange(val, index)" />
+          </template>
+          <template #footer>
+            <NButton type="primary" @click="handleAddGroup">
+              添加分组
+            </NButton>
+          </template>
+        </Draggable>
+      </NScrollbar>
     </template>
   </main>
 </template>
-
-<style scoped>
-.group-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 10px;
-}
-</style>
