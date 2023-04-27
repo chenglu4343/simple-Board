@@ -27,7 +27,7 @@ function handleAddTask(task: TaskType) {
 
 <template>
   <main
-    class="p-2 h-100vh box-border bg-gray-1 grid" :class="{
+    class="p-2 h-100vh box-border bg-gray-1 grid gap-2" :class="{
       'grid-rows-[auto_auto_1fr]': isList,
       'grid-rows-[auto_1fr]': isBoard,
     }"
@@ -37,17 +37,17 @@ function handleAddTask(task: TaskType) {
       <NSwitch :value="isBoard" :on-update-value="handleSwitchModeChange" />
     </header>
 
-    <TaskInput v-if="isList" class="my-2" @add-task="handleAddTask" />
+    <TaskInput v-if="isList" @add-task="handleAddTask" />
 
     <template v-if="isList && list.groups.length === 1">
       <TaskList v-model:tasks="list.groups[0].tasks" />
     </template>
 
     <template v-else-if="isBoard">
-      <NScrollbar x-scrollable>
+      <NScrollbar x-scrollable class="min-h-0">
         <Draggable
           v-model="list.groups"
-          class="flex items-start gap-2 flex-nowrap mt-2"
+          class="flex items-start gap-2 flex-nowrap"
           item-key="index"
         >
           <template #item="{ element, index }">

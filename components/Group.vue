@@ -22,9 +22,9 @@ function handleAddTask(task: TaskType) {
 </script>
 
 <template>
-  <div class="bg-white p-2 rounded grid grid-rows-[auto_auto_1fr]">
+  <div class="bg-white p-2 rounded grid grid-rows-[auto_auto_1fr] gap-2 ">
     <div>{{ group.title }}</div>
-    <TaskInput class="mt-2" @add-task="handleAddTask" />
-    <TaskList :tasks="group.tasks" class="mt-2" :group="taskListGroup" @update:tasks="(val) => handleTasksChange(val)" />
+    <TaskInput @add-task="handleAddTask" />
+    <TaskList :tasks="group.tasks" :group="taskListGroup" @update:tasks="(val) => handleTasksChange(val)" />
   </div>
 </template>
