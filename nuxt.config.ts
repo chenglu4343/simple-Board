@@ -7,6 +7,9 @@ export default defineNuxtConfig({
     '@unocss/nuxt',
     '@vueuse/nuxt',
   ],
+  css: [
+    'normalize.css',
+  ],
   vite: {
     plugins: [
       Components({

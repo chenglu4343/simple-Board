@@ -7,6 +7,7 @@ specifiers:
   '@vueuse/nuxt': ^10.0.0
   eslint: ^8.38.0
   naive-ui: ^2.34.3
+  normalize.css: ^8.0.1
   nuxt: ^3.4.1
   typescript: ^5.0.4
   unplugin-vue-components: ^0.24.1
@@ -21,6 +22,7 @@ dependencies:
   '@vueuse/nuxt': 10.1.0_nuxt@3.4.2+vue@3.2.47
   eslint: 8.39.0
   naive-ui: 2.34.3_vue@3.2.47
+  normalize.css: 8.0.1
   typescript: 5.0.4
   vite: 4.3.1
   vue: 3.2.47
@@ -4446,6 +4448,10 @@ packages:
   /normalize-range/0.1.2:
     resolution: {integrity: sha1-LRDAa9/TEuqXd2laTShDlFa3WUI=}
     engines: {node: '>=0.10.0'}
+
+  /normalize.css/8.0.1:
+    resolution: {integrity: sha512-qizSNPO93t1YUuUhP22btGOo3chcvDFqFaj2TRybP0DMxkHOCTYwp3n34fel4a31ORXy4m1Xq0Gyqpb5m33qIg==}
+    dev: false
 
   /npm-run-path/4.0.1:
     resolution: {integrity: sha512-S48WzZW777zhNIrn7gxOlISNAqi9ZC/uQFnRdbeIHhZhCA6UqpkOT8T1G7BvfdgP4Er8gF4sUbaS0i7QvIfCWw==}
