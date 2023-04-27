@@ -10,6 +10,7 @@ export default defineNuxtConfig({
   ],
   css: [
     'normalize.css',
+    '~/css/scrollbar.css',
   ],
   vite: {
     plugins: [
