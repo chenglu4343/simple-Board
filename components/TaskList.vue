@@ -5,6 +5,7 @@ import Task from '~/components/Task.vue'
 
 const props = defineProps<{
   tasks: TaskType[]
+  group?: String
 }>()
 
 const emits = defineEmits<{
@@ -19,7 +20,7 @@ function handleTaskChange(task: TaskType, index: number) {
 </script>
 
 <template>
-  <Draggable :model-value="props.tasks" item-key="index" @update:model-value="(val) => emits('update:tasks', val)">
+  <Draggable :model-value="props.tasks" item-key="index" :group="group" @update:model-value="(val) => emits('update:tasks', val)">
     <template #item="{ element, index }">
       <Task :task="element" @update:task="(val) => handleTaskChange(val, index)" />
     </template>

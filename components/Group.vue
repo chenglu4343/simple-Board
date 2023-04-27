@@ -5,6 +5,7 @@ import TaskList from '~/components/TaskList.vue'
 
 const props = defineProps<{
   group: GroupType
+  taskListGroup?: string
 }>()
 
 const emits = defineEmits<{
@@ -24,6 +25,6 @@ function handleAddTask(task: TaskType) {
   <div>
     <div>{{ group.title }}</div>
     <TaskInput class="mt-2" @add-task="handleAddTask" />
-    <TaskList :tasks="group.tasks" class="mt-2" @update:tasks="(val) => handleTasksChange(val)" />
+    <TaskList :tasks="group.tasks" class="mt-2" :group="taskListGroup" @update:tasks="(val) => handleTasksChange(val)" />
   </div>
 </template>

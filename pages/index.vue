@@ -40,7 +40,7 @@ function handleAddTask(task: TaskType) {
     <template v-else-if="isBoard">
       <Draggable v-model="list.groups" class="group-container" item-key="index">
         <template #item="{ element, index }">
-          <Group :group="element" @update:group="(val) => handleGroupChange(val, index)" />
+          <Group :group="element" task-list-group="list-group" @update:group="(val) => handleGroupChange(val, index)" />
         </template>
         <template #footer>
           <NButton type="primary" @click="handleAddGroup">
