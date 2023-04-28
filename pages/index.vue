@@ -22,6 +22,14 @@ function handleGroupChange(group: GroupType, index: number) {
 function handleAddTask(task: TaskType) {
   addTask2List(list.value, task)
 }
+
+function handleInsertLeftGroup(currentIndex: number) {
+  list.value.groups.splice(currentIndex, 0, createGroup())
+}
+
+function handleInsertRightGroup(currentIndex: number) {
+  list.value.groups.splice(currentIndex + 1, 0, createGroup())
+}
 </script>
 
 <template>
@@ -49,7 +57,14 @@ function handleAddTask(task: TaskType) {
         item-key="index"
       >
         <template #item="{ element, index }">
-          <Group :group="element" task-list-group="list-group" class="min-w-60 max-w-60" @update:group="(val) => handleGroupChange(val, index)" />
+          <Group
+            :group="element"
+            task-list-group="list-group"
+            class="min-w-60 max-w-60"
+            @update:group="(val) => handleGroupChange(val, index)"
+            @insert-left-group="handleInsertLeftGroup(index)"
+            @insert-right-group="handleInsertRightGroup(index)"
+          />
         </template>
         <template #footer>
           <NButton type="primary" @click="handleAddGroup">

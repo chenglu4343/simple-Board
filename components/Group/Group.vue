@@ -10,6 +10,8 @@ const props = defineProps<{
 
 const emits = defineEmits<{
   (e: 'update:group', group: GroupType): void
+  (e: 'insertLeftGroup'): void
+  (e: 'insertRightGroup'): void
 }>()
 
 const isTitleEdit = ref(false)
@@ -30,6 +32,16 @@ function handleUpdateGroupTitle(val: string) {
 function handleRename() {
   isShowOperatePopover.value = false
   isTitleEdit.value = true
+}
+
+function handleInsertLeftGroup() {
+  isShowOperatePopover.value = false
+  emits('insertLeftGroup')
+}
+
+function handleInsertRightGroup() {
+  isShowOperatePopover.value = false
+  emits('insertRightGroup')
 }
 </script>
 
@@ -59,11 +71,11 @@ function handleRename() {
               <div class="i-ant-design:edit-filled" />
               <span>重命名</span>
             </li>
-            <li class="hover:bg-gray-1 operate-item">
+            <li class="hover:bg-gray-1 operate-item" @click="handleInsertLeftGroup">
               <div class="i-ant-design:insert-row-left-outlined" />
               <span>左侧添加分组</span>
             </li>
-            <li class="hover:bg-gray-1 operate-item">
+            <li class="hover:bg-gray-1 operate-item" @click="handleInsertRightGroup">
               <div class="i-ant-design:insert-row-right-outlined" />
               <span>右侧添加分组</span>
             </li>
