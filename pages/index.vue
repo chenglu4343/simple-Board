@@ -30,6 +30,10 @@ function handleInsertLeftGroup(currentIndex: number) {
 function handleInsertRightGroup(currentIndex: number) {
   list.value.groups.splice(currentIndex + 1, 0, createGroup())
 }
+
+function handleDeleteGroup(currentIndex: number) {
+  list.value.groups.splice(currentIndex, 1)
+}
 </script>
 
 <template>
@@ -64,6 +68,7 @@ function handleInsertRightGroup(currentIndex: number) {
             @update:group="(val) => handleGroupChange(val, index)"
             @insert-left-group="handleInsertLeftGroup(index)"
             @insert-right-group="handleInsertRightGroup(index)"
+            @delete-group="handleDeleteGroup(index)"
           />
         </template>
         <template #footer>

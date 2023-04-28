@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useDialog } from 'naive-ui'
 import type { GroupType, TaskType } from '~/types'
 import TaskInput from '~/components/TaskInput'
 import TaskList from '~/components/TaskList'
@@ -12,8 +13,10 @@ const emits = defineEmits<{
   (e: 'update:group', group: GroupType): void
   (e: 'insertLeftGroup'): void
   (e: 'insertRightGroup'): void
+  (e: 'deleteGroup'): void
 }>()
 
+const dialog = useDialog()
 const isTitleEdit = ref(false)
 const isShowOperatePopover = ref(false)
 
@@ -42,6 +45,18 @@ function handleInsertLeftGroup() {
 function handleInsertRightGroup() {
   isShowOperatePopover.value = false
   emits('insertRightGroup')
+}
+
+function handleDeleteGroup() {
+  dialog.warning({
+    title: '警告',
+    content: '你确定？',
+    positiveText: '确定',
+    negativeText: '不确定',
+    onPositiveClick: () => {
+      emits('deleteGroup')
+    },
+  })
 }
 </script>
 
@@ -79,7 +94,7 @@ function handleInsertRightGroup() {
               <div class="i-ant-design:insert-row-right-outlined" />
               <span>右侧添加分组</span>
             </li>
-            <li class="hover:bg-gray-1 operate-item">
+            <li class="hover:bg-gray-1 operate-item" @click="handleDeleteGroup">
               <div class="i-ant-design:delete-filled" />
               <span>删除</span>
             </li>
