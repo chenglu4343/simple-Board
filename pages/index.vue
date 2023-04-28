@@ -54,6 +54,20 @@ function handleDeleteGroup(currentIndex: number) {
       <TaskList v-model:tasks="list.groups[0].tasks" />
     </template>
 
+    <template v-else-if="isList && list.groups.length > 1">
+      <Draggable
+        v-model="list.groups" class="overflow-y-scroll" item-key="index" tag="n-collapse" :component-data="{
+          themeOverrides: {
+            dividerColor: '#6B6B77FF',
+          },
+        }"
+      >
+        <template #item="{ element, index }">
+          <CollapseGroup :group="element" task-list-group="collaspe-group" @update:group="(val) => handleGroupChange(val, index)" />
+        </template>
+      </Draggable>
+    </template>
+
     <template v-else-if="isBoard">
       <Draggable
         v-model="list.groups"
