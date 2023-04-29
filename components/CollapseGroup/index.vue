@@ -35,7 +35,7 @@ const operateLists: OperateOption[] = [
     },
   },
   {
-    icon: 'i-ant-design:insert-row-left-outlined',
+    icon: 'i-ant-design:insert-row-above-outlined',
     label: '上方添加分组',
     onClick: () => {
       isShowOperatePopover.value = false
@@ -43,7 +43,7 @@ const operateLists: OperateOption[] = [
     },
   },
   {
-    icon: 'i-ant-design:insert-row-right-outlined',
+    icon: 'i-ant-design:insert-row-below-outlined',
     label: '下方添加分组',
     onClick: () => {
       isShowOperatePopover.value = false
