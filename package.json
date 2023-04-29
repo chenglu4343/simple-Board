@@ -16,6 +16,7 @@
     "@pinia/nuxt": "^0.4.9",
     "@vueuse/core": "^10.0.0",
     "@vueuse/nuxt": "^10.0.0",
+    "dexie": "^3.2.3",
     "eslint": "^8.38.0",
     "naive-ui": "^2.34.3",
     "normalize.css": "^8.0.1",
