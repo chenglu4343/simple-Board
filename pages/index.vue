@@ -63,7 +63,15 @@ function handleDeleteGroup(currentIndex: number) {
         }"
       >
         <template #item="{ element, index }">
-          <CollapseGroup :group="element" task-list-group="collaspe-group" @update:group="(val) => handleGroupChange(val, index)" />
+          <CollapseGroup
+            :group="element"
+            preset="operate-group"
+            task-list-group="collaspe-group"
+            @update:group="(val) => handleGroupChange(val, index)"
+            @insert-top-group="handleInsertLeftGroup(index)"
+            @insert-bottom-group="handleInsertRightGroup(index)"
+            @delete-group="handleDeleteGroup(index)"
+          />
         </template>
       </Draggable>
     </template>
