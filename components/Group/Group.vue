@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useDialog } from 'naive-ui'
+import type { OperateOption } from '../PopoverList'
 import type { GroupType, TaskType } from '~/types'
 import TaskInput from '~/components/TaskInput'
 import TaskList from '~/components/TaskList'
@@ -16,9 +17,55 @@ const emits = defineEmits<{
   (e: 'deleteGroup'): void
 }>()
 
+defineOptions({
+  name: 'Group',
+})
+
 const dialog = useDialog()
 const isTitleEdit = ref(false)
 const isShowOperatePopover = ref(false)
+
+const operateLists: OperateOption[] = [
+  {
+    icon: 'i-ant-design:edit-filled',
+    label: '重命名',
+    onClick: () => {
+      isShowOperatePopover.value = false
+      isTitleEdit.value = true
+    },
+  },
+  {
+    icon: 'i-ant-design:insert-row-left-outlined',
+    label: '左侧添加分组',
+    onClick: () => {
+      isShowOperatePopover.value = false
+      emits('insertLeftGroup')
+    },
+  },
+  {
+    icon: 'i-ant-design:insert-row-right-outlined',
+    label: '右侧添加分组',
+    onClick: () => {
+      isShowOperatePopover.value = false
+      emits('insertRightGroup')
+    },
+  },
+  {
+    icon: 'i-ant-design:delete-filled',
+    label: '删除',
+    onClick: () => {
+      dialog.warning({
+        title: '警告',
+        content: '你确定？',
+        positiveText: '确定',
+        negativeText: '不确定',
+        onPositiveClick: () => {
+          emits('deleteGroup')
+        },
+      })
+    },
+  },
+]
 
 function handleTasksChange(tasks: TaskType[]) {
   emits('update:group', { ...props.group, tasks })
@@ -30,33 +77,6 @@ function handleAddTask(task: TaskType) {
 
 function handleUpdateGroupTitle(val: string) {
   emits('update:group', { ...props.group, title: val })
-}
-
-function handleRename() {
-  isShowOperatePopover.value = false
-  isTitleEdit.value = true
-}
-
-function handleInsertLeftGroup() {
-  isShowOperatePopover.value = false
-  emits('insertLeftGroup')
-}
-
-function handleInsertRightGroup() {
-  isShowOperatePopover.value = false
-  emits('insertRightGroup')
-}
-
-function handleDeleteGroup() {
-  dialog.warning({
-    title: '警告',
-    content: '你确定？',
-    positiveText: '确定',
-    negativeText: '不确定',
-    onPositiveClick: () => {
-      emits('deleteGroup')
-    },
-  })
 }
 </script>
 
@@ -70,37 +90,7 @@ function handleDeleteGroup() {
           onUpdateValue: handleUpdateGroupTitle,
         }"
       />
-      <NPopover
-        v-model:show="isShowOperatePopover"
-        trigger="click"
-        :theme-overrides="{
-          padding: '2px 5px',
-        }"
-      >
-        <template #trigger>
-          <div class="i-ant-design:more-outlined cursor-pointer" />
-        </template>
-        <template #default>
-          <ul class="list-none p-0 cursor-pointer">
-            <li class="hover:bg-gray-1 operate-item" @click="handleRename">
-              <div class="i-ant-design:edit-filled" />
-              <span>重命名</span>
-            </li>
-            <li class="hover:bg-gray-1 operate-item" @click="handleInsertLeftGroup">
-              <div class="i-ant-design:insert-row-left-outlined" />
-              <span>左侧添加分组</span>
-            </li>
-            <li class="hover:bg-gray-1 operate-item" @click="handleInsertRightGroup">
-              <div class="i-ant-design:insert-row-right-outlined" />
-              <span>右侧添加分组</span>
-            </li>
-            <li class="hover:bg-gray-1 operate-item" @click="handleDeleteGroup">
-              <div class="i-ant-design:delete-filled" />
-              <span>删除</span>
-            </li>
-          </ul>
-        </template>
-      </NPopover>
+      <PopoverList v-model:isShow="isShowOperatePopover" :operate-lists="operateLists" />
     </div>
     <TaskInput @add-task="handleAddTask" />
     <TaskList :tasks="group.tasks" :group="taskListGroup" class="m-h-0 overflow-y-scroll" @update:tasks="(val) => handleTasksChange(val)" />
