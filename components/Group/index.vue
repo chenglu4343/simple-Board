@@ -95,11 +95,3 @@ function handleUpdateGroupTitle(val: string) {
     <TaskList :tasks="group.tasks" :group="taskListGroup" class="m-h-0 overflow-y-scroll" @update:tasks="(val) => handleTasksChange(val)" />
   </div>
 </template>
-
-<style scoped>
-.operate-item{
-  display: flex;
-  align-items: center;
-  gap: 2px;
-}
-</style>
