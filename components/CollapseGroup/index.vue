@@ -73,10 +73,25 @@ function handleUpdateTask(tasks: TaskType[]) {
     tasks,
   })
 }
+
+function handleUpdateGroupTitle(val: string) {
+  emits('update:group', {
+    ...props.group,
+    title: val,
+  })
+}
 </script>
 
 <template>
   <NCollapseItem :title="group.title">
+    <template #header>
+      <FocusInput
+        v-model:is-edit="isTitleEdit" :input-props="{
+          'value': group.title,
+          'onUpdate:value': handleUpdateGroupTitle,
+        }"
+      />
+    </template>
     <template #header-extra>
       <template v-if="isShowGroupOperate">
         <PopoverList v-model:is-show="isShowOperatePopover" :operate-lists="operateLists" />
