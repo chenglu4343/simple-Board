@@ -6,6 +6,10 @@ const emits = defineEmits<{
   (e: 'addTask', task: TaskType): void
 }>()
 
+defineOptions({
+  name: 'TaskInput',
+})
+
 const taskInputVal = ref('')
 
 function handleInputEnter() {

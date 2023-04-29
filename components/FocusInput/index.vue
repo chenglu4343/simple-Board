@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import type { InputInst, InputProps } from 'naive-ui'
 import { mergeProps } from 'vue'
+import { bool, object } from 'vue-types'
 
-const props = withDefaults(defineProps<{
-  inputProps?: InputProps
-  isEdit?: boolean
-  isEnterEndEdit?: boolean
-}>(), {
-  isEnterEndEdit: true,
+const props = defineProps({
+  inputProps: object<InputProps>().def(() => ({})),
+  isEdit: bool().def(false),
+  isEnterEndEdit: bool().def(true),
 })
 
 const emits = defineEmits<{

@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { useDialog } from 'naive-ui'
+import { object, string } from 'vue-types'
 import type { OperateOption } from '../PopoverList'
 import type { GroupType, TaskType } from '~/types'
 
-const props = defineProps<{
-  group: GroupType
-  preset?: 'operate-group'
-  taskListGroup?: string
-}>()
+const props = defineProps({
+  group: object<GroupType>().isRequired,
+  preset: string<'operate-group'>(),
+  taskListGroup: string(),
+})
 
 const emits = defineEmits<{
   (e: 'update:group', val: GroupType): void

@@ -1,15 +1,20 @@
 <script setup lang="ts">
+import { array, string } from 'vue-types'
 import Draggable from 'vuedraggable'
 import type { TaskType } from '~/types'
 
-const props = defineProps<{
-  tasks: TaskType[]
-  group?: String
-}>()
+const props = defineProps({
+  group: string(),
+  tasks: array<TaskType>().def(() => ([])),
+})
 
 const emits = defineEmits<{
   (e: 'update:tasks', tasks: TaskType[]): void
 }>()
+
+defineOptions({
+  name: 'TaskList',
+})
 
 function handleTaskChange(task: TaskType, index: number) {
   const newTasks = [...props.tasks]
