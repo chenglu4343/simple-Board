@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { array, bool } from 'vue-types'
+import { array, bool, func } from 'vue-types'
 import type { OperateOption } from '.'
 
-const props = defineProps({
+defineProps({
   isShow: bool(),
   operateLists: array<OperateOption>(),
+  handleIconClick: func<(e: MouseEvent) => void>().def(() => {}),
 })
 
 const emits = defineEmits<{
@@ -26,7 +27,7 @@ defineOptions({
     @update:show="(val) => emits('update:isShow', val)"
   >
     <template #trigger>
-      <div class="i-ant-design:more-outlined cursor-pointer" />
+      <div class="i-ant-design:more-outlined cursor-pointer" @click="handleIconClick" />
     </template>
     <template #default>
       <ul class="list-none p-0 cursor-pointer">

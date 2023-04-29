@@ -94,7 +94,11 @@ function handleUpdateGroupTitle(val: string) {
     </template>
     <template #header-extra>
       <template v-if="isShowGroupOperate">
-        <PopoverList v-model:is-show="isShowOperatePopover" :operate-lists="operateLists" />
+        <PopoverList
+          v-model:is-show="isShowOperatePopover"
+          :operate-lists="operateLists"
+          :handle-icon-click="(e) => { e.stopPropagation() }"
+        />
       </template>
     </template>
     <TaskList :tasks="group.tasks" :group="taskListGroup" @update:tasks="handleUpdateTask" />
