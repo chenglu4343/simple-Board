@@ -3,9 +3,6 @@ import Draggable from 'vuedraggable'
 import { useListMode } from './composables/useListMode'
 import type { GroupType, ListType, TaskType } from '~/types'
 import { createList } from '~/utils/createType'
-import Group from '~/components/Group'
-import TaskInput from '~/components/TaskInput'
-import TaskList from '~/components/TaskList'
 
 const { isBoard, isList, handleSwitchModeChange } = useListMode()
 
