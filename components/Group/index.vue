@@ -66,16 +66,16 @@ const operateLists: OperateOption[] = [
   },
 ]
 
-function handleTasksChange(tasks: TaskType[]) {
-  emits('update:group', { ...props.group, tasks })
-}
-
 function handleAddTask(task: TaskType) {
-  emits('update:group', { ...props.group, tasks: [task, ...props.group.tasks] })
+  emits('update:group', { ...props.group, taskIds: [task.id!, ...props.group.taskIds] })
 }
 
 function handleUpdateGroupTitle(val: string) {
   emits('update:group', { ...props.group, title: val })
+}
+
+function handleUpdateTaskIds(taskIds: number[]) {
+  emits('update:group', { ...props.group, taskIds })
 }
 </script>
 
@@ -92,6 +92,6 @@ function handleUpdateGroupTitle(val: string) {
       <PopoverList v-model:isShow="isShowOperatePopover" :operate-lists="operateLists" />
     </div>
     <TaskInput @add-task="handleAddTask" />
-    <TaskList :tasks="group.tasks" :group="taskListGroup" class="m-h-0 overflow-y-scroll" @update:tasks="(val) => handleTasksChange(val)" />
+    <TaskList :task-ids="group.taskIds" :group="taskListGroup" class="m-h-0 overflow-y-scroll" @update:task-ids="handleUpdateTaskIds" />
   </div>
 </template>

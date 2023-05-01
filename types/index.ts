@@ -6,10 +6,11 @@ export interface ListType {
 
 export interface GroupType {
   title: string
-  tasks: TaskType[]
+  taskIds: number[]
 }
 
 export interface TaskType {
+  id?: number
   title: string
   content: string
   status: 'todo' | 'done'

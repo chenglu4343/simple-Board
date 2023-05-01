@@ -1,32 +1,42 @@
 <script setup lang="ts">
 import { array, string } from 'vue-types'
 import Draggable from 'vuedraggable'
+import { dbService } from '~/dexie/dbService'
 import type { TaskType } from '~/types'
 
 const props = defineProps({
   group: string(),
-  tasks: array<TaskType>().def(() => ([])),
+  taskIds: array<number>().def(() => []),
 })
 
 const emits = defineEmits<{
-  (e: 'update:tasks', tasks: TaskType[]): void
+  (e: 'update:taskIds', taskIds: number[]): void
 }>()
 
 defineOptions({
   name: 'TaskList',
 })
 
-function handleTaskChange(task: TaskType, index: number) {
-  const newTasks = [...props.tasks]
-  newTasks[index] = task
-  emits('update:tasks', newTasks)
+const tasksArr = ref<TaskType[]>([])
+
+watchEffect(() => updateTaskArr())
+
+function updateTaskArr() {
+  dbService.getTasksByIds(props.taskIds).then((tasks) => {
+    tasksArr.value = tasks
+  })
 }
 </script>
 
 <template>
-  <Draggable :model-value="props.tasks" item-key="index" :group="group" @update:model-value="(val) => emits('update:tasks', val)">
-    <template #item="{ element, index }">
-      <Task :task="element" @update:task="(val) => handleTaskChange(val, index)" />
+  <Draggable
+    :model-value="tasksArr"
+    item-key="id"
+    :group="group"
+    @update:model-value="(val:TaskType[]) => emits('update:taskIds', val.map(item => item.id!))"
+  >
+    <template #item="{ element }">
+      <Task :task="element" @update:task="updateTaskArr" />
     </template>
   </Draggable>
 </template>

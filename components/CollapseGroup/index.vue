@@ -2,7 +2,7 @@
 import { useDialog } from 'naive-ui'
 import { object, string } from 'vue-types'
 import type { OperateOption } from '../PopoverList'
-import type { GroupType, TaskType } from '~/types'
+import type { GroupType } from '~/types'
 
 const props = defineProps({
   group: object<GroupType>().isRequired,
@@ -68,17 +68,17 @@ const operateLists: OperateOption[] = [
   },
 ]
 
-function handleUpdateTask(tasks: TaskType[]) {
-  emits('update:group', {
-    ...props.group,
-    tasks,
-  })
-}
-
 function handleUpdateGroupTitle(val: string) {
   emits('update:group', {
     ...props.group,
     title: val,
+  })
+}
+
+function handleUpdateTaskIds(ids: number[]) {
+  emits('update:group', {
+    ...props.group,
+    taskIds: ids,
   })
 }
 </script>
@@ -102,6 +102,6 @@ function handleUpdateGroupTitle(val: string) {
         />
       </template>
     </template>
-    <TaskList :tasks="group.tasks" :group="taskListGroup" @update:tasks="handleUpdateTask" />
+    <TaskList :task-ids="group.taskIds" :group="taskListGroup" @update:task-ids="handleUpdateTaskIds" />
   </NCollapseItem>
 </template>

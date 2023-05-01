@@ -50,7 +50,7 @@ function handleSwitchModeChange(val: boolean) {
     <TaskInput v-if="isList" @add-task="handleAddTask" />
 
     <template v-if="isList && list.groups.length === 1">
-      <TaskList v-model:tasks="list.groups[0].tasks" />
+      <TaskList v-model:task-ids="list.groups[0].taskIds" />
     </template>
 
     <template v-else-if="isList && list.groups.length > 1">

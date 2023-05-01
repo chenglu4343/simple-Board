@@ -12,11 +12,11 @@ defineOptions({
 
 const taskInputVal = ref('')
 
-function handleInputEnter() {
+async function handleInputEnter() {
   if (!taskInputVal.value)
     return
 
-  emits('addTask', createTask(taskInputVal.value))
+  emits('addTask', await createTask(taskInputVal.value))
 
   taskInputVal.value = ''
 }
