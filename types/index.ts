@@ -1,5 +1,6 @@
 export interface ListType {
   title: string
+  showingMode: 'list' | 'board'
   groups: GroupType[]
 }
 

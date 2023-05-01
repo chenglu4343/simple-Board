@@ -4,6 +4,7 @@ export function createList(title?: string): ListType {
   return {
     title: title ?? '未命名',
     groups: [],
+    showingMode: 'list',
   }
 }
 

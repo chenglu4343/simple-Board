@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import Draggable from 'vuedraggable'
-import { useListMode } from './composables/useListMode'
-import type { GroupType, ListType, TaskType } from '~/types'
-import { createList } from '~/utils/createType'
+import { storeToRefs } from 'pinia'
+import type { GroupType, TaskType } from '~/types'
+import { useListStore } from '~/stores/useListStore'
 
-const { isBoard, isList, handleSwitchModeChange } = useListMode()
-
-const list = ref<ListType>(createList())
+const { list, isBoard, isList } = storeToRefs(useListStore())
 
 function handleAddGroup() {
   list.value.groups.push(createGroup())
@@ -30,6 +28,10 @@ function handleInsertRightGroup(currentIndex: number) {
 
 function handleDeleteGroup(currentIndex: number) {
   list.value.groups.splice(currentIndex, 1)
+}
+
+function handleSwitchModeChange(val: boolean) {
+  list.value.showingMode = val ? 'board' : 'list'
 }
 </script>
 
