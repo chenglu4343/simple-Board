@@ -8,6 +8,7 @@ const props = defineProps({
   group: object<GroupType>().isRequired,
   preset: string<'operate-group'>(),
   taskListGroup: string(),
+  collapseItemName: string(),
 })
 
 const emits = defineEmits<{
@@ -84,10 +85,11 @@ function handleUpdateTaskIds(ids: number[]) {
 </script>
 
 <template>
-  <NCollapseItem :title="group.title">
+  <NCollapseItem :title="group.title" :name="collapseItemName">
     <template #header>
       <FocusInput
-        v-model:is-edit="isTitleEdit" :input-props="{
+        v-model:is-edit="isTitleEdit"
+        :input-props="{
           'value': group.title,
           'onUpdate:value': handleUpdateGroupTitle,
         }"

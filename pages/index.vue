@@ -55,10 +55,14 @@ function handleSwitchModeChange(val: boolean) {
 
     <template v-else-if="isList && list.groups.length > 1">
       <Draggable
-        v-model="list.groups" class="overflow-y-scroll" item-key="index" tag="n-collapse" :component-data="{
+        v-model="list.groups"
+        class="overflow-y-scroll"
+        item-key="index" tag="n-collapse"
+        :component-data="{
           themeOverrides: {
             dividerColor: '#6B6B77FF',
           },
+          defaultExpandedNames: list.groups.map((item, index) => `${index}-${item.title}`),
         }"
       >
         <template #item="{ element, index }">
@@ -66,6 +70,7 @@ function handleSwitchModeChange(val: boolean) {
             :group="element"
             preset="operate-group"
             task-list-group="collaspe-group"
+            :collapse-item-name="`${index}-${element.title}`"
             @update:group="(val) => handleGroupChange(val, index)"
             @insert-top-group="handleInsertLeftGroup(index)"
             @insert-bottom-group="handleInsertRightGroup(index)"
