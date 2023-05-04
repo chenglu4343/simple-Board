@@ -27,6 +27,19 @@ const isTitleEdit = ref(false)
 const isShowOperatePopover = ref(false)
 const isShowGroupOperate = computed(() => ['operate-group'].includes(props.preset!))
 
+const handleUpdateGroupTitle = useUpdateObjKey({
+  props,
+  emits,
+  propsKey: 'group',
+  updateKey: 'title',
+})
+const handleUpdateTaskIds = useUpdateObjKey({
+  props,
+  emits,
+  propsKey: 'group',
+  updateKey: 'taskIds',
+})
+
 const operateLists: OperateOption[] = [
   {
     icon: 'i-ant-design:edit-filled',
@@ -68,20 +81,6 @@ const operateLists: OperateOption[] = [
     },
   },
 ]
-
-function handleUpdateGroupTitle(val: string) {
-  emits('update:group', {
-    ...props.group,
-    title: val,
-  })
-}
-
-function handleUpdateTaskIds(ids: number[]) {
-  emits('update:group', {
-    ...props.group,
-    taskIds: ids,
-  })
-}
 </script>
 
 <template>

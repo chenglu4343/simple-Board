@@ -24,6 +24,19 @@ const dialog = useDialog()
 const isTitleEdit = ref(false)
 const isShowOperatePopover = ref(false)
 
+const handleUpdateTaskIds = useUpdateObjKey({
+  props,
+  emits,
+  propsKey: 'group',
+  updateKey: 'taskIds',
+})
+const handleUpdateGroupTitle = useUpdateObjKey({
+  props,
+  emits,
+  propsKey: 'group',
+  updateKey: 'title',
+})
+
 const operateLists: OperateOption[] = [
   {
     icon: 'i-ant-design:edit-filled',
@@ -67,15 +80,7 @@ const operateLists: OperateOption[] = [
 ]
 
 function handleAddTask(task: TaskType) {
-  emits('update:group', { ...props.group, taskIds: [task.id!, ...props.group.taskIds] })
-}
-
-function handleUpdateGroupTitle(val: string) {
-  emits('update:group', { ...props.group, title: val })
-}
-
-function handleUpdateTaskIds(taskIds: number[]) {
-  emits('update:group', { ...props.group, taskIds })
+  handleUpdateTaskIds([task.id!, ...props.group.taskIds])
 }
 </script>
 
