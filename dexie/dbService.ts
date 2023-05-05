@@ -27,6 +27,18 @@ export class TODODexie extends Dexie {
     return this.lists.get(id)
   }
 
+  async getListsByIds(ids: number[]) {
+    const lists = await this.lists.where('id').anyOf(ids).toArray()
+    const idMap = new Map<number, ListType>()
+    lists.forEach((list) => {
+      idMap.set(list.id as number, list)
+    })
+    const sortedTasks = ids.map(id => idMap.get(id)!)
+
+    return sortedTasks
+  }
+
+
   async updateList(list: ListType) {
     return this.lists.update(list.id!, list)
   }

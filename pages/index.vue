@@ -3,8 +3,23 @@ import Draggable from 'vuedraggable'
 import { storeToRefs } from 'pinia'
 import type { GroupType, TaskType } from '~/types'
 import { useListStore } from '~/stores/useListStore'
+import LeftSider from './components/LeftSider.vue'
+import { dbService } from '~/dexie/dbService'
 
 const { list, isBoard, isList } = storeToRefs(useListStore())
+const listData=useLocalStorage<{
+  listIds:number[],
+  currentListId:number
+}>('listData',{
+  listIds:[],
+  currentListId:NaN
+})
+
+function handleAddList() {
+  dbService.addList(createList()).then((newList) => {
+    listData.value.listIds.push(newList.id!)
+  })
+}
 
 function handleAddGroup() {
   list.value.groups.push(createGroup())
@@ -38,7 +53,10 @@ function handleSwitchModeChange(val: boolean) {
 <template>
   <NLayout has-sider>
     <NLayoutSider show-trigger="arrow-circle" bordered collapse-mode="transform">
-      这是个清单列表
+      <LeftSider 
+        :list-ids="listData.listIds" 
+        v-model:currentListId="listData.currentListId" 
+        @add-list="handleAddList"/>
     </NLayoutSider>
 
     <NLayoutContent>
