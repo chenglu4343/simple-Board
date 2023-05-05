@@ -1,5 +1,4 @@
-import type { GroupType, ListType } from '../types'
-import { dbService } from '~/dexie/dbService'
+import type { GroupType, ListType, TaskType } from '../types'
 
 export function createList(title?: string): ListType {
   return {
@@ -16,10 +15,10 @@ export function createGroup(title?: string): GroupType {
   }
 }
 
-export async function createTask(title?: string) {
-  return dbService.addTask({
+export function createTask(title?: string): TaskType {
+  return {
     title: title ?? '',
     status: 'todo',
     content: '',
-  })
+  }
 }

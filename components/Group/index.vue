@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { useDialog } from 'naive-ui'
-import { object, string } from 'vue-types'
+import { number, object, string } from 'vue-types'
 import type { OperateOption } from '../PopoverList'
-import type { GroupType, TaskType } from '~/types'
+import type { GroupType } from '~/types'
 
 const props = defineProps({
+  listId: number().isRequired,
+  groupIndex: number().isRequired,
   group: object<GroupType>().isRequired,
   taskListGroup: string(),
 })
@@ -14,6 +16,7 @@ const emits = defineEmits<{
   (e: 'insertLeftGroup'): void
   (e: 'insertRightGroup'): void
   (e: 'deleteGroup'): void
+  (e: 'needUpdateList'): void
 }>()
 
 defineOptions({
@@ -78,10 +81,6 @@ const operateLists: OperateOption[] = [
     },
   },
 ]
-
-function handleAddTask(task: TaskType) {
-  handleUpdateTaskIds([task.id!, ...props.group.taskIds])
-}
 </script>
 
 <template>
@@ -96,7 +95,7 @@ function handleAddTask(task: TaskType) {
       />
       <PopoverList v-model:isShow="isShowOperatePopover" :operate-lists="operateLists" />
     </div>
-    <TaskInput @add-task="handleAddTask" />
+    <TaskInput :list-id="listId" :group-index="groupIndex" @need-update-list="emits('needUpdateList')" />
     <TaskList :task-ids="group.taskIds" :group="taskListGroup" class="m-h-0 overflow-y-scroll" @update:task-ids="handleUpdateTaskIds" />
   </div>
 </template>

@@ -1,9 +1,14 @@
 <script setup lang="ts">
-import type { TaskType } from '~/types'
-import { createTask } from '~/utils/createType'
+import { number } from 'vue-types'
+import { dbService } from '~/dexie/dbService'
+
+const props = defineProps({
+  listId: number().isRequired,
+  groupIndex: number().isRequired,
+})
 
 const emits = defineEmits<{
-  (e: 'addTask', task: TaskType): void
+  (e: 'needUpdateList'): void
 }>()
 
 defineOptions({
@@ -16,9 +21,10 @@ async function handleInputEnter() {
   if (!taskInputVal.value)
     return
 
-  emits('addTask', await createTask(taskInputVal.value))
+  await dbService.addTask(props.listId, props.groupIndex, createTask(taskInputVal.value))
 
   taskInputVal.value = ''
+  emits('needUpdateList')
 }
 </script>
 

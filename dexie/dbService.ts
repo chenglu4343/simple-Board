@@ -42,13 +42,34 @@ export class TODODexie extends Dexie {
     return this.lists.update(list.id!, list)
   }
 
-  async addTask(task: TaskType) {
-    const id = await this.tasks.add(task) as TaskType['id']
+  async addTask(listId: number, groupIndex: number, task: TaskType) {
+    let addTaskId: number | undefined
+    await this.transaction('rw', this.tasks, this.lists, async () => {
+      // 获取指定的list
+      const list = await this.lists.get(listId)
+      if (!list)
+        throw new Error(`List with id ${listId} not found`)
+
+      // 获取或创建指定的group
+      const group = list.groups[groupIndex] || createGroup()
+
+      // 添加task到group中
+      addTaskId = await this.tasks.add(task) as NonNullable<TaskType['id']>
+      group.taskIds = [addTaskId, ...group.taskIds]
+
+      // 更新list中的group
+      list.groups[groupIndex] = group
+      await this.lists.update(listId, { groups: list.groups })
+    })
 
     return {
       ...task,
-      id,
+      id: addTaskId,
     }
+  }
+
+  deleteTask(listId: number, groupIndex: number, taskId: number) {
+    // TODO:删除task
   }
 
   async updateTask(task: TaskType) {

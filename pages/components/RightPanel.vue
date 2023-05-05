@@ -3,7 +3,7 @@ import { number } from 'vue-types'
 import Draggable from 'vuedraggable'
 import { cloneDeep } from 'lodash-es'
 import { dbService } from '~/dexie/dbService'
-import type { GroupType, ListType, TaskType } from '~/types'
+import type { GroupType, ListType } from '~/types'
 
 const props = defineProps({
   listId: number().def(NaN),
@@ -38,9 +38,6 @@ function handleSwitchModeChange(val: boolean) {
     showingMode: val ? 'board' : 'list',
   }
   updateList(newList)
-}
-function handleAddTask(task: TaskType) {
-  // TODO: 统一调配添加task
 }
 function handleAddGroup() {
   handleGroupsChange([
@@ -109,7 +106,7 @@ function handleGroupsChange(groups: GroupType[]) {
       <NSwitch :value="isBoard" :on-update-value="handleSwitchModeChange" />
     </header>
 
-    <TaskInput v-if="isList" @add-task="handleAddTask" />
+    <TaskInput v-if="isList" :list-id="listId" :group-index="0" @need-update-list="queryUpdateList" />
 
     <template v-if="isList && list?.groups.length === 1">
       <TaskList :task-ids="list.groups[0].taskIds" @update:task-ids="handleFirstGroupTaskIdsChange" />
@@ -151,7 +148,10 @@ function handleGroupsChange(groups: GroupType[]) {
       >
         <template #item="{ element, index }">
           <Group
+            :list-id="listId"
+            :group-index="index"
             :group="element" task-list-group="list-group" class="min-w-60 max-w-60"
+            @need-update-list="queryUpdateList"
             @update:group="(val) => handleGroupChange(val, index)"
             @insert-left-group="handleInsertLeftGroup(index)"
             @insert-right-group="handleInsertRightGroup(index)"
