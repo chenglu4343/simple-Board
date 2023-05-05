@@ -10,6 +10,9 @@ dependencies:
   '@pinia/nuxt':
     specifier: ^0.4.9
     version: 0.4.9(typescript@5.0.4)(vue@3.2.47)
+  '@types/lodash-es':
+    specifier: ^4.17.7
+    version: 4.17.7
   '@vueuse/core':
     specifier: ^10.0.0
     version: 10.1.0(vue@3.2.47)
@@ -22,6 +25,9 @@ dependencies:
   eslint:
     specifier: ^8.38.0
     version: 8.39.0
+  lodash-es:
+    specifier: ^4.17.21
+    version: 4.17.21
   naive-ui:
     specifier: ^2.34.3
     version: 2.34.3(vue@3.2.47)
