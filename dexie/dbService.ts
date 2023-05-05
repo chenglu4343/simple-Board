@@ -1,15 +1,34 @@
 import type { Table } from 'dexie'
 import Dexie from 'dexie'
-import type { TaskType } from '~/types'
+import type { ListType, TaskType } from '~/types'
 
 export class TODODexie extends Dexie {
   tasks!: Table<TaskType>
+  lists!: Table<ListType>
 
   constructor() {
     super('TODODexie')
     this.version(1).stores({
-      tasks: '++id, title, content, status', // Primary key and indexed props
+      tasks: '++id, title, content, status',
+      lists: '++id, title, showingMode, groups',
     })
+  }
+
+  async addList(list:ListType){
+    const id = await this.lists.add(list) as ListType['id']
+
+    return {
+      ...list,
+      id,
+    }
+  }
+
+  async getListById(id: number) {
+    return this.lists.get(id)
+  }
+
+  async updateList(list: ListType) {
+    return this.lists.update(list.id!, list)
   }
 
   async addTask(task: TaskType) {
