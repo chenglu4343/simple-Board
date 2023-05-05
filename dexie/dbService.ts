@@ -14,7 +14,7 @@ export class TODODexie extends Dexie {
     })
   }
 
-  async addList(list:ListType){
+  async addList(list: ListType) {
     const id = await this.lists.add(list) as ListType['id']
 
     return {
@@ -37,7 +37,6 @@ export class TODODexie extends Dexie {
 
     return sortedTasks
   }
-
 
   async updateList(list: ListType) {
     return this.lists.update(list.id!, list)
