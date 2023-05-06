@@ -3,6 +3,7 @@ export interface ListType {
   title: string
   showingMode: 'list' | 'board'
   groups: GroupType[]
+  disableChangeMode?: boolean
 }
 
 export interface GroupType {

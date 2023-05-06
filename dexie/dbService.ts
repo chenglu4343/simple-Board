@@ -12,6 +12,8 @@ export class TODODexie extends Dexie {
       tasks: '++id, title, content, status',
       lists: '++id, title, showingMode, groups',
     })
+
+    this.initDexieStores()
   }
 
   async addList(list: ListType) {
@@ -104,6 +106,18 @@ export class TODODexie extends Dexie {
     const sortedTasks = ids.map(id => idMap.get(id)!)
 
     return sortedTasks
+  }
+
+  /** 初始化存储数据 */
+  private async initDexieStores() {
+    const collectionList = await this.lists.get(-1)
+    if (!collectionList) {
+      this.lists.add({
+        ...createList('收集箱'),
+        id: -1,
+        disableChangeMode: true,
+      })
+    }
   }
 }
 

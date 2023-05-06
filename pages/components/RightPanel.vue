@@ -101,9 +101,14 @@ function handleGroupsChange(groups: GroupType[]) {
       'grid-rows-[auto_1fr]': isBoard,
     }"
   >
-    <header>
-      {{ isBoard ? '看板模式' : '清单模式' }}
-      <NSwitch :value="isBoard" :on-update-value="handleSwitchModeChange" />
+    <header class="flex justify-between items-center">
+      <div>
+        {{ list?.title }}
+      </div>
+      <div v-if="!list?.disableChangeMode">
+        {{ isBoard ? '看板模式' : '清单模式' }}
+        <NSwitch :value="isBoard" :on-update-value="handleSwitchModeChange" />
+      </div>
     </header>
 
     <TaskInput v-if="isList" :list-id="listId" :group-index="0" @need-update-list="queryUpdateList" />

@@ -31,6 +31,17 @@ function updateTaskArr() {
     </NButton>
 
     <div
+      class="p-2 cursor-pointer"
+      :class="{
+        'text-blue-500': props.currentListId === -1,
+      }" @click="emits('update:currentListId', -1)"
+    >
+      收集箱
+    </div>
+
+    <hr v-if="listArr.length > 0">
+
+    <div
       v-for="list of listArr"
       :key="list.id!"
       class="p-2 cursor-pointer"

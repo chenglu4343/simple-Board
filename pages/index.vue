@@ -8,7 +8,7 @@ const listData = useLocalStorage<{
   currentListId: number
 }>('listData', {
   listIds: [],
-  currentListId: NaN,
+  currentListId: -1,
 })
 
 function handleAddList() {
