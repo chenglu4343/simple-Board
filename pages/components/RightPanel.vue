@@ -2,6 +2,7 @@
 import { number } from 'vue-types'
 import Draggable from 'vuedraggable'
 import { cloneDeep } from 'lodash-es'
+import BoardView from './BoardView.vue'
 import { dbService } from '~/dexie/dbService'
 import type { GroupType, ListType } from '~/types'
 
@@ -38,12 +39,6 @@ function handleSwitchModeChange(val: boolean) {
     showingMode: val ? 'board' : 'list',
   }
   updateList(newList)
-}
-function handleAddGroup() {
-  handleGroupsChange([
-    ...list.value!.groups,
-    createGroup(),
-  ])
 }
 function handleGroupChange(group: GroupType, index: number) {
   handleGroupsChange([
@@ -147,31 +142,11 @@ function handleGroupsChange(groups: GroupType[]) {
       </Draggable>
     </template>
 
-    <template v-else-if="isBoard">
-      <Draggable
-        :model-value="list!.groups"
-        class="flex items-start gap-2 flex-nowrap overflow-x-scroll scrollbar"
-        item-key="index"
-        @update:model-value="handleGroupsChange"
-      >
-        <template #item="{ element, index }">
-          <Group
-            :list-id="listId"
-            :group-index="index"
-            :group="element" task-list-group="list-group" class="min-w-60 max-w-60"
-            @need-update-list="queryUpdateList"
-            @update:group="(val) => handleGroupChange(val, index)"
-            @insert-left-group="handleInsertLeftGroup(index)"
-            @insert-right-group="handleInsertRightGroup(index)"
-            @delete-group="handleDeleteGroup(index)"
-          />
-        </template>
-        <template #footer>
-          <NButton type="primary" @click="handleAddGroup">
-            添加分组
-          </NButton>
-        </template>
-      </Draggable>
-    </template>
+    <BoardView
+      v-else-if="isBoard"
+      :list="list!"
+      @need-update-list="queryUpdateList"
+      @update-groups="handleGroupsChange"
+    />
   </main>
 </template>
