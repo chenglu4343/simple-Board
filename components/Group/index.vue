@@ -96,6 +96,14 @@ const operateLists: OperateOption[] = [
       <PopoverList v-model:isShow="isShowOperatePopover" :operate-lists="operateLists" />
     </div>
     <TaskInput :list-id="listId" :group-index="groupIndex" @need-update-list="emits('needUpdateList')" />
-    <TaskList :list-id="listId" :group-index="groupIndex" :task-ids="group.taskIds" :group="taskListGroup" class="m-h-0 overflow-y-scroll" @need-update-list="emits('needUpdateList')" @update:task-ids="handleUpdateTaskIds" />
+    <TaskList
+      :list-id="listId"
+      :group-index="groupIndex"
+      :task-ids="group.taskIds"
+      :group="taskListGroup"
+      class="m-h-0 overflow-y-scroll"
+      @need-update-list="emits('needUpdateList')"
+      @update:task-ids="handleUpdateTaskIds"
+    />
   </div>
 </template>
