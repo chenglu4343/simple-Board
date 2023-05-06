@@ -1,14 +1,17 @@
 <script setup lang="ts">
-import { object } from 'vue-types'
+import { number, object } from 'vue-types'
 import { dbService } from '~/dexie/dbService'
 import type { TaskType } from '~/types'
 
 const props = defineProps({
+  listId: number().isRequired,
+  groupIndex: number().isRequired,
   task: object<TaskType>().isRequired,
 })
 
 const emits = defineEmits<{
   (e: 'update:task', task: TaskType): void
+  (e: 'needUpdateList'): void
 }>()
 
 defineOptions({
@@ -43,8 +46,9 @@ function handleRightClickTitle(e: MouseEvent) {
   isShowToolPopover.value = true
 }
 
-function handleDeleteTask() {
-  // TODO:list的数据存储做好后再做
+async function handleDeleteTask() {
+  await dbService.deleteTask(props.listId, props.groupIndex, props.task.id!)
+  emits('needUpdateList')
 }
 </script>
 

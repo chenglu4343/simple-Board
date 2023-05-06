@@ -109,7 +109,7 @@ function handleGroupsChange(groups: GroupType[]) {
     <TaskInput v-if="isList" :list-id="listId" :group-index="0" @need-update-list="queryUpdateList" />
 
     <template v-if="isList && list?.groups.length === 1">
-      <TaskList :task-ids="list.groups[0].taskIds" @update:task-ids="handleFirstGroupTaskIdsChange" />
+      <TaskList :list-id="listId" :group-index="0" :task-ids="list.groups[0].taskIds" @need-update-list="queryUpdateList" @update:task-ids="handleFirstGroupTaskIdsChange" />
     </template>
 
     <template v-else-if="isList && list!.groups.length > 1">
@@ -128,12 +128,15 @@ function handleGroupsChange(groups: GroupType[]) {
       >
         <template #item="{ element, index }">
           <CollapseGroup
+            :list-id="listId"
+            :group-index="index"
             :group="element" preset="operate-group" task-list-group="collaspe-group"
             :collapse-item-name="`${index}-${element.title}`"
             @update:group="(val) => handleGroupChange(val, index)"
             @insert-top-group="handleInsertLeftGroup(index)"
             @insert-bottom-group="handleInsertRightGroup(index)"
             @delete-group="handleDeleteGroup(index)"
+            @need-update-list="queryUpdateList"
           />
         </template>
       </Draggable>

@@ -68,8 +68,27 @@ export class TODODexie extends Dexie {
     }
   }
 
-  deleteTask(listId: number, groupIndex: number, taskId: number) {
+  async deleteTask(listId: number, groupIndex: number, taskId: number) {
     // TODO:删除task
+    await this.transaction('rw', this.tasks, this.lists, async () => {
+      // 获取指定的list
+      const list = await this.lists.get(listId)
+      if (!list)
+        throw new Error(`List with id ${listId} not found`)
+
+      // 获取或创建指定的group
+      const group = list.groups[groupIndex]
+
+      // 删除task
+      group.taskIds = group.taskIds.filter(id => id !== taskId)
+
+      // 更新list中的group
+      list.groups[groupIndex] = group
+      await this.lists.update(listId, { groups: list.groups })
+
+      // 删除task
+      await this.tasks.delete(taskId)
+    })
   }
 
   async updateTask(task: TaskType) {

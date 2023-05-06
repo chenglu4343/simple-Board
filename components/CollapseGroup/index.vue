@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { useDialog } from 'naive-ui'
-import { object, string } from 'vue-types'
+import { number, object, string } from 'vue-types'
 import type { OperateOption } from '../PopoverList'
 import type { GroupType } from '~/types'
 
 const props = defineProps({
+  listId: number().isRequired,
+  groupIndex: number().isRequired,
   group: object<GroupType>().isRequired,
   preset: string<'operate-group'>(),
   taskListGroup: string(),
@@ -16,6 +18,7 @@ const emits = defineEmits<{
   (e: 'insertTopGroup'): void
   (e: 'insertBottomGroup'): void
   (e: 'deleteGroup'): void
+  (e: 'needUpdateList'): void
 }>()
 
 defineOptions({
@@ -103,6 +106,13 @@ const operateLists: OperateOption[] = [
         />
       </template>
     </template>
-    <TaskList :task-ids="group.taskIds" :group="taskListGroup" @update:task-ids="handleUpdateTaskIds" />
+    <TaskList
+      :list-id="listId"
+      :group-index="groupIndex"
+      :task-ids="group.taskIds"
+      :group="taskListGroup"
+      @update:task-ids="handleUpdateTaskIds"
+      @need-update-list="emits('needUpdateList')"
+    />
   </NCollapseItem>
 </template>
