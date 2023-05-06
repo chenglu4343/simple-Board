@@ -24,7 +24,7 @@ const {
 
 /**
  * 存在同时变更list数据时(例如从一个group拖拽到另外一个group)，第二次变更拿到的并不是第一次变更之后的list数据
- * 因此，变更将新的list直接存到本地副本，等待一个promise之后统一更新到dexie中
+ * 因此，变更将新的list直接存到本地副本，等待一个promise之后统一更新到dexie
  */
 const saveListToDexie = usePromiseDoOnce(async () => {
   /** clone，因为groups是reactive数据 */
@@ -150,7 +150,7 @@ function handleGroupsChange(groups: GroupType[]) {
       v-else-if="isBoard"
       :list="list!"
       @need-update-list="queryUpdateList"
-      @update-groups="handleGroupsChange"
+      @update:list="updateList"
     />
   </main>
 </template>
