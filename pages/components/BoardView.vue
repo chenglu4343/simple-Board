@@ -20,7 +20,7 @@ const {
   getGroupsInsertLeft,
   getGroupsInsertRight,
   getGroupsDelete,
-} = useGroupsChange(toRef(props.list, 'groups'))
+} = useGroupsChange(computed(() => props.list.groups))
 
 function handleGroupChange(group: GroupType, index: number) {
   emits('updateGroups', getGroupsChange(group, index))
@@ -50,7 +50,9 @@ function handleDeleteGroup(currentIndex: number) {
       <Group
         :list-id="list.id!"
         :group-index="index"
-        :group="element" task-list-group="list-group" class="min-w-60 max-w-60"
+        :group="element"
+        task-list-group="list-group"
+        class="min-w-60 max-w-60"
         @need-update-list="emits('needUpdateList')"
         @update:group="(val) => handleGroupChange(val, index)"
         @insert-left-group="handleInsertLeftGroup(index)"
