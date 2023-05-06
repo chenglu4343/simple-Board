@@ -47,7 +47,7 @@ function queryUpdateList() {
 /**
  * 将新的list存入本地副本，等待主进程更新完之后在微任务中更新
  */
-async function updateList(newList: ListType) {
+async function handleUpdateList(newList: ListType) {
   list.value = newList
   saveListToDexie()
 }
@@ -57,7 +57,7 @@ function handleSwitchModeChange(val: boolean) {
     ...list.value!,
     showingMode: val ? 'board' : 'list',
   }
-  updateList(newList)
+  handleUpdateList(newList)
 }
 function handleGroupChange(group: GroupType, index: number) {
   handleGroupsChange(getGroupsChange(group, index))
@@ -84,7 +84,7 @@ function handleGroupsChange(groups: GroupType[]) {
     ...list.value!,
     groups,
   }
-  updateList(newList)
+  handleUpdateList(newList)
 }
 </script>
 
@@ -150,7 +150,7 @@ function handleGroupsChange(groups: GroupType[]) {
       v-else-if="isBoard"
       :list="list!"
       @need-update-list="queryUpdateList"
-      @update:list="updateList"
+      @update:list="handleUpdateList"
     />
   </main>
 </template>
