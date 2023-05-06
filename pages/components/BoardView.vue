@@ -2,6 +2,7 @@
 <script setup lang="ts">
 import { object } from 'vue-types'
 import Draggable from 'vuedraggable'
+import { useGroupsChange } from '../composables/useGroupsChange'
 import type { GroupType, ListType } from '~/types'
 
 const props = defineProps({
@@ -13,38 +14,28 @@ const emits = defineEmits<{
   (e: 'updateGroups', groups: GroupType[]): void
 }>()
 
+const {
+  getGroupsChange,
+  getGroupsAdd,
+  getGroupsInsertLeft,
+  getGroupsInsertRight,
+  getGroupsDelete,
+} = useGroupsChange(toRef(props.list, 'groups'))
+
 function handleGroupChange(group: GroupType, index: number) {
-  emits('updateGroups', [
-    ...props.list.groups.slice(0, index),
-    group,
-    ...props.list.groups.slice(index + 1),
-  ])
+  emits('updateGroups', getGroupsChange(group, index))
 }
 function handleAddGroup() {
-  emits('updateGroups', [
-    ...props.list.groups,
-    createGroup(),
-  ])
+  emits('updateGroups', getGroupsAdd())
 }
 function handleInsertLeftGroup(currentIndex: number) {
-  emits('updateGroups', [
-    ...props.list.groups.slice(0, currentIndex),
-    createGroup(),
-    ...props.list.groups.slice(currentIndex),
-  ])
+  emits('updateGroups', getGroupsInsertLeft(currentIndex))
 }
 function handleInsertRightGroup(currentIndex: number) {
-  emits('updateGroups', [
-    ...props.list.groups.slice(0, currentIndex + 1),
-    createGroup(),
-    ...props.list.groups.slice(currentIndex + 1),
-  ])
+  emits('updateGroups', getGroupsInsertRight(currentIndex))
 }
 function handleDeleteGroup(currentIndex: number) {
-  emits('updateGroups', [
-    ...props.list.groups.slice(0, currentIndex),
-    ...props.list.groups.slice(currentIndex + 1),
-  ])
+  emits('updateGroups', getGroupsDelete(currentIndex))
 }
 </script>
 

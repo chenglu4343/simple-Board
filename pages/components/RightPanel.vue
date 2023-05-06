@@ -2,6 +2,7 @@
 import { number } from 'vue-types'
 import Draggable from 'vuedraggable'
 import { cloneDeep } from 'lodash-es'
+import { useGroupsChange } from '../composables/useGroupsChange'
 import BoardView from './BoardView.vue'
 import { dbService } from '~/dexie/dbService'
 import type { GroupType, ListType } from '~/types'
@@ -13,6 +14,13 @@ const props = defineProps({
 const list = ref<ListType | null>()
 const isList = computed(() => list.value?.showingMode === 'list')
 const isBoard = computed(() => list.value?.showingMode === 'board')
+
+const {
+  getGroupsChange,
+  getGroupsInsertLeft,
+  getGroupsInsertRight,
+  getGroupsDelete,
+} = useGroupsChange(computed(() => list.value?.groups ?? []))
 
 watchEffect(() => queryUpdateList())
 
@@ -41,31 +49,16 @@ function handleSwitchModeChange(val: boolean) {
   updateList(newList)
 }
 function handleGroupChange(group: GroupType, index: number) {
-  handleGroupsChange([
-    ...list.value!.groups.slice(0, index),
-    group,
-    ...list.value!.groups.slice(index + 1),
-  ])
+  handleGroupsChange(getGroupsChange(group, index))
 }
-function handleInsertLeftGroup(currentIndex: number) {
-  handleGroupsChange([
-    ...list.value!.groups.slice(0, currentIndex),
-    createGroup(),
-    ...list.value!.groups.slice(currentIndex),
-  ])
+function handleInsertTopGroup(currentIndex: number) {
+  handleGroupsChange(getGroupsInsertLeft(currentIndex))
 }
-function handleInsertRightGroup(currentIndex: number) {
-  handleGroupsChange([
-    ...list.value!.groups.slice(0, currentIndex + 1),
-    createGroup(),
-    ...list.value!.groups.slice(currentIndex + 1),
-  ])
+function handleInsertBottomGroup(currentIndex: number) {
+  handleGroupsChange(getGroupsInsertRight(currentIndex))
 }
 function handleDeleteGroup(currentIndex: number) {
-  handleGroupsChange([
-    ...list.value!.groups.slice(0, currentIndex),
-    ...list.value!.groups.slice(currentIndex + 1),
-  ])
+  handleGroupsChange(getGroupsDelete(currentIndex))
 }
 function handleFirstGroupTaskIdsChange(taskIds: number[]) {
   handleGroupsChange([
@@ -133,8 +126,8 @@ function handleGroupsChange(groups: GroupType[]) {
             :group="element" preset="operate-group" task-list-group="collaspe-group"
             :collapse-item-name="`${index}-${element.title}`"
             @update:group="(val) => handleGroupChange(val, index)"
-            @insert-top-group="handleInsertLeftGroup(index)"
-            @insert-bottom-group="handleInsertRightGroup(index)"
+            @insert-top-group="handleInsertTopGroup(index)"
+            @insert-bottom-group="handleInsertBottomGroup(index)"
             @delete-group="handleDeleteGroup(index)"
             @need-update-list="queryUpdateList"
           />
