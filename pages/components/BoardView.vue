@@ -17,7 +17,7 @@ const {
   getGroupsDelete,
 } = useGroupsChange(computed(() => list.value.groups))
 
-function changeGroupsAndEmit(groups: GroupType[]) {
+function handleGroupsChange(groups: GroupType[]) {
   list.value = {
     ...list.value,
     groups,
@@ -25,19 +25,19 @@ function changeGroupsAndEmit(groups: GroupType[]) {
 }
 
 function handleGroupChange(group: GroupType, index: number) {
-  changeGroupsAndEmit(getGroupsChange(group, index))
+  handleGroupsChange(getGroupsChange(group, index))
 }
 function handleAddGroup() {
-  changeGroupsAndEmit(getGroupsAdd())
+  handleGroupsChange(getGroupsAdd())
 }
 function handleInsertLeftGroup(currentIndex: number) {
-  changeGroupsAndEmit(getGroupsInsertLeft(currentIndex))
+  handleGroupsChange(getGroupsInsertLeft(currentIndex))
 }
 function handleInsertRightGroup(currentIndex: number) {
-  changeGroupsAndEmit(getGroupsInsertRight(currentIndex))
+  handleGroupsChange(getGroupsInsertRight(currentIndex))
 }
 function handleDeleteGroup(currentIndex: number) {
-  changeGroupsAndEmit(getGroupsDelete(currentIndex))
+  handleGroupsChange(getGroupsDelete(currentIndex))
 }
 </script>
 
@@ -46,7 +46,7 @@ function handleDeleteGroup(currentIndex: number) {
     :model-value="list!.groups"
     class="flex items-start gap-2 flex-nowrap overflow-x-scroll scrollbar"
     item-key="timesmap"
-    @update:model-value="changeGroupsAndEmit"
+    @update:model-value="handleGroupsChange"
   >
     <template #item="{ element, index }">
       <Group
