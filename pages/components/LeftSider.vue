@@ -7,9 +7,13 @@ import type { ListType } from '~/types'
 const localListDataStore = useLocalListsDataStore()
 const { currentListId } = storeToRefs(localListDataStore)
 
+const collectionList = ref(createList())
 const listArr = ref<ListType[]>([])
 
 watchEffect(() => updateTaskArr())
+dbService.getListById(-1).then((list) => {
+  collectionList.value = list!
+})
 
 function updateTaskArr() {
   dbService.getListsByIds(localListDataStore.listIds).then((lists) => {
@@ -24,28 +28,22 @@ function updateTaskArr() {
       新建清单
     </NButton>
 
-    <div
-      class="p-2 cursor-pointer"
-      :class="{
-        'text-blue-500': currentListId === -1,
-      }"
+    <ListItem
+      class="mt-2"
+      :list="collectionList"
+      :is-active="currentListId === -1"
       @click="currentListId = -1"
-    >
-      收集箱
-    </div>
+    />
 
     <hr v-if="listArr.length > 0">
 
-    <div
+    <ListItem
       v-for="list of listArr"
       :key="list.id!"
-      class="p-2 cursor-pointer"
-      :class="{
-        'text-blue-500': currentListId === list.id,
-      }"
+      class="mt-2"
+      :list="list"
+      :is-active="currentListId === list.id"
       @click="currentListId = list.id!"
-    >
-      {{ list.title }}
-    </div>
+    />
   </div>
 </template>
