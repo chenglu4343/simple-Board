@@ -1,24 +1,18 @@
 <script setup lang="ts">
-import { array, number } from 'vue-types'
+import { storeToRefs } from 'pinia'
 import { dbService } from '~/dexie/dbService'
+import { useLocalListsDataStore } from '~/stores/useLocalListsDataStore'
 import type { ListType } from '~/types'
 
-const props = defineProps({
-  listIds: array<number>().isRequired,
-  currentListId: number(),
-})
-
-const emits = defineEmits<{
-  (e: 'add-list'): void
-  (e: 'update:currentListId', listId: number): void
-}>()
+const localListDataStore = useLocalListsDataStore()
+const { currentListId } = storeToRefs(localListDataStore)
 
 const listArr = ref<ListType[]>([])
 
 watchEffect(() => updateTaskArr())
 
 function updateTaskArr() {
-  dbService.getListsByIds(props.listIds).then((lists) => {
+  dbService.getListsByIds(localListDataStore.listIds).then((lists) => {
     listArr.value = lists
   })
 }
@@ -26,15 +20,16 @@ function updateTaskArr() {
 
 <template>
   <div class="h-full p-2 box-border">
-    <NButton type="primary" @click="emits('add-list')">
+    <NButton type="primary" @click="localListDataStore.addList">
       新建清单
     </NButton>
 
     <div
       class="p-2 cursor-pointer"
       :class="{
-        'text-blue-500': props.currentListId === -1,
-      }" @click="emits('update:currentListId', -1)"
+        'text-blue-500': currentListId === -1,
+      }"
+      @click="currentListId = -1"
     >
       收集箱
     </div>
@@ -46,9 +41,9 @@ function updateTaskArr() {
       :key="list.id!"
       class="p-2 cursor-pointer"
       :class="{
-        'text-blue-500': list.id === props.currentListId,
+        'text-blue-500': currentListId === list.id,
       }"
-      @click="emits('update:currentListId', list.id!)"
+      @click="currentListId = list.id!"
     >
       {{ list.title }}
     </div>
