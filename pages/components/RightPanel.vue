@@ -1,63 +1,28 @@
 <script setup lang="ts">
-import { number } from 'vue-types'
 import Draggable from 'vuedraggable'
-import { cloneDeep } from 'lodash-es'
+import { storeToRefs } from 'pinia'
 import { useGroupsChange } from '../composables/useGroupsChange'
 import BoardView from './BoardView.vue'
-import { dbService } from '~/dexie/dbService'
-import type { GroupType, ListType } from '~/types'
+import type { GroupType } from '~/types'
+import { useCurrentListStore } from '~/stores/useCurrentListStore'
+import { useLocalListsDataStore } from '~/stores/useLocalListsDataStore'
 
-const props = defineProps({
-  listId: number().def(NaN),
-})
-
-const list = ref<ListType | null>()
-const isList = computed(() => list.value?.showingMode === 'list')
-const isBoard = computed(() => list.value?.showingMode === 'board')
+const { list, isList, isBoard } = storeToRefs(useCurrentListStore())
+const { currentListId } = storeToRefs(useLocalListsDataStore())
+const { updateList } = useCurrentListStore()
 
 const {
   getGroupsChange,
   getGroupsInsertLeft,
   getGroupsInsertRight,
   getGroupsDelete,
-} = useGroupsChange(computed(() => list.value?.groups ?? []))
-
-/**
- * 存在同时变更list数据时(例如从一个group拖拽到另外一个group)，第二次变更拿到的并不是第一次变更之后的list数据
- * 因此，变更将新的list直接存到本地副本，等待一个promise之后统一更新到dexie
- */
-const saveListToDexie = usePromiseDoOnce(async () => {
-  /** clone，因为groups是reactive数据 */
-  await dbService.updateList(cloneDeep(list.value!))
-})
-
-watchEffect(() => queryUpdateList())
-
-function queryUpdateList() {
-  if (!props.listId) {
-    list.value = null
-  }
-  else {
-    dbService.getListById(props.listId).then((queryList) => {
-      list.value = queryList!
-    })
-  }
-}
-
-/**
- * 将新的list存入本地副本，等待主进程更新完之后在微任务中更新
- */
-async function handleUpdateList(newList: ListType) {
-  list.value = newList
-  saveListToDexie()
-}
+} = useGroupsChange(computed(() => list.value.groups ?? []))
 
 function handleSwitchModeChange(val: boolean) {
-  const newList: ListType = {
+  list.value = {
     ...list.value!,
     showingMode: val ? 'board' : 'list',
   }
-  handleUpdateList(newList)
 }
 function handleGroupChange(group: GroupType, index: number) {
   handleGroupsChange(getGroupsChange(group, index))
@@ -80,20 +45,15 @@ function handleFirstGroupTaskIdsChange(taskIds: number[]) {
   ])
 }
 function handleGroupsChange(groups: GroupType[]) {
-  const newList: ListType = {
+  list.value = {
     ...list.value!,
     groups,
   }
-  handleUpdateList(newList)
 }
 </script>
 
 <template>
-  <main v-if="!listId" class="h-100vh box-border">
-    没有数据
-  </main>
   <main
-    v-else
     class="p-2 h-100vh box-border bg-gray-1 grid gap-2"
     :class="{
       'grid-rows-[auto_auto_1fr]': isList,
@@ -110,10 +70,10 @@ function handleGroupsChange(groups: GroupType[]) {
       </div>
     </header>
 
-    <TaskInput v-if="isList" :list-id="listId" :group-index="0" @need-update-list="queryUpdateList" />
+    <TaskInput v-if="isList" :list-id="currentListId" :group-index="0" @need-update-list="updateList" />
 
     <template v-if="isList && list?.groups.length === 1">
-      <TaskList :list-id="listId" :group-index="0" :task-ids="list.groups[0].taskIds" @need-update-list="queryUpdateList" @update:task-ids="handleFirstGroupTaskIdsChange" />
+      <TaskList :list-id="currentListId" :group-index="0" :task-ids="list.groups[0].taskIds" @need-update-list="updateList" @update:task-ids="handleFirstGroupTaskIdsChange" />
     </template>
 
     <template v-else-if="isList && list!.groups.length > 1">
@@ -132,7 +92,7 @@ function handleGroupsChange(groups: GroupType[]) {
       >
         <template #item="{ element, index }">
           <CollapseGroup
-            :list-id="listId"
+            :list-id="currentListId"
             :group-index="index"
             :group="element" preset="operate-group" task-list-group="collaspe-group"
             :collapse-item-name="`${index}-${element.title}`"
@@ -140,17 +100,12 @@ function handleGroupsChange(groups: GroupType[]) {
             @insert-top-group="handleInsertTopGroup(index)"
             @insert-bottom-group="handleInsertBottomGroup(index)"
             @delete-group="handleDeleteGroup(index)"
-            @need-update-list="queryUpdateList"
+            @need-update-list="updateList"
           />
         </template>
       </Draggable>
     </template>
 
-    <BoardView
-      v-else-if="isBoard"
-      :list="list!"
-      @need-update-list="queryUpdateList"
-      @update:list="handleUpdateList"
-    />
+    <BoardView v-else-if="isBoard" />
   </main>
 </template>
