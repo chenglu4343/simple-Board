@@ -116,6 +116,7 @@ export class TODODexie extends Dexie {
         ...createList('收集箱'),
         id: -1,
         disableChangeMode: true,
+        icon: 'collection',
       })
     }
   }

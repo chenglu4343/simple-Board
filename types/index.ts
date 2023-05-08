@@ -4,6 +4,8 @@ export interface ListType {
   showingMode: 'list' | 'board'
   groups: GroupType[]
   disableChangeMode?: boolean
+  // TODO：后续能否支持动态icon
+  icon: 'collection' | 'list'
 }
 
 export interface GroupType {
