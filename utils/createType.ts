@@ -12,6 +12,7 @@ export function createGroup(title?: string): GroupType {
   return {
     title: title ?? '未命名',
     taskIds: [],
+    timesmap: Date.now(),
   }
 }
 

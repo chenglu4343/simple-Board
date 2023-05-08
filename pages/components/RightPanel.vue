@@ -86,7 +86,7 @@ function handleGroupsChange(groups: GroupType[]) {
           themeOverrides: {
             dividerColor: '#6B6B77FF',
           },
-          defaultExpandedNames: list!.groups.map((item, index) => `${index}-${item.title}`),
+          defaultExpandedNames: list!.groups.map((item, index) => item.timesmap),
         }"
         @update:model-value="handleGroupsChange"
       >
@@ -95,7 +95,7 @@ function handleGroupsChange(groups: GroupType[]) {
             :list-id="currentListId"
             :group-index="index"
             :group="element" preset="operate-group" task-list-group="collaspe-group"
-            :collapse-item-name="`${index}-${element.title}`"
+            :collapse-item-name="element.timesmap"
             @update:group="(val) => handleGroupChange(val, index)"
             @insert-top-group="handleInsertTopGroup(index)"
             @insert-bottom-group="handleInsertBottomGroup(index)"
