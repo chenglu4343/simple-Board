@@ -53,7 +53,7 @@ async function handleDeleteTask() {
 </script>
 
 <template>
-  <div class="cursor-pointer grid grid-cols-[auto_1fr] gap-2" @click="handleEditTask">
+  <div class="cursor-pointer grid grid-cols-[auto_1fr] gap-2 hover:bg-gray-3 p-2 rounded-2" @click="handleEditTask">
     <NCheckbox
       :checked="task.status === 'done'"
       @update:checked="handleTaskStatusChange"
