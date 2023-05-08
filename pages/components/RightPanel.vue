@@ -80,13 +80,13 @@ function handleGroupsChange(groups: GroupType[]) {
       <Draggable
         :model-value="list!.groups"
         class="overflow-y-scroll"
-        item-key="index"
+        item-key="timesmap"
         tag="n-collapse"
         :component-data="{
           themeOverrides: {
             dividerColor: '#6B6B77FF',
           },
-          defaultExpandedNames: list!.groups.map((item, index) => item.timesmap),
+          defaultExpandedNames: list!.groups.map(item => item.timesmap),
         }"
         @update:model-value="handleGroupsChange"
       >
