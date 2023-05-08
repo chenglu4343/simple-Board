@@ -21,6 +21,13 @@ defineOptions({
 })
 
 const tasksArr = ref<TaskType[]>([])
+const taskArrModel = computed({
+  get: () => tasksArr.value,
+  set: (val) => {
+    tasksArr.value = val
+    emits('update:taskIds', val.map(item => item.id!))
+  },
+})
 
 watchEffect(() => updateTaskArr())
 
@@ -33,10 +40,9 @@ function updateTaskArr() {
 
 <template>
   <Draggable
-    :model-value="tasksArr"
+    v-model="taskArrModel"
     item-key="id"
     :group="group"
-    @update:model-value="(val:TaskType[]) => emits('update:taskIds', val.map(item => item.id!))"
   >
     <template #item="{ element }">
       <Task :task="element" :list-id="listId" :group-index="groupIndex" @update:task="updateTaskArr" @need-update-list="emits('needUpdateList')" />
