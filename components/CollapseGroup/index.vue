@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useDialog } from 'naive-ui'
 import { number, object, string } from 'vue-types'
-import type { OperateOption } from '../PopoverList'
+import type { OperateOption } from '../IconSelectList'
 import type { GroupType } from '~/types'
 
 const props = defineProps({
@@ -102,7 +102,7 @@ const operateLists: OperateOption[] = [
         <PopoverList
           v-model:is-show="isShowOperatePopover"
           :operate-lists="operateLists"
-          :handle-icon-click="(e) => { e.stopPropagation() }"
+          :handle-icon-click="(e:MouseEvent) => { e.stopPropagation() }"
         />
       </template>
     </template>

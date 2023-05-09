@@ -1,4 +1,4 @@
-import PopoverList from './Comp.vue'
+import IconSelectList from './Comp.vue'
 
 export interface OperateOption {
   icon: string
@@ -6,4 +6,4 @@ export interface OperateOption {
   onClick?: () => void
 }
 
-export default PopoverList
+export default IconSelectList

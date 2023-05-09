@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { array, bool, func } from 'vue-types'
-import type { OperateOption } from '.'
+import type { OperateOption } from '../IconSelectList'
 
 defineProps({
   isShow: bool(),
@@ -11,10 +11,6 @@ defineProps({
 const emits = defineEmits<{
   (e: 'update:isShow', val: boolean): void
 }>()
-
-defineOptions({
-  name: 'PopoverList',
-})
 </script>
 
 <template>
@@ -30,17 +26,7 @@ defineOptions({
       <div class="i-ant-design:more-outlined cursor-pointer" @click="handleIconClick" />
     </template>
     <template #default>
-      <ul class="list-none p-0 cursor-pointer">
-        <li
-          v-for="(item, index) of operateLists"
-          :key="index"
-          class="hover:bg-gray-1 flex items-center gap-2"
-          @click="item.onClick"
-        >
-          <div :class="{ [item.icon]: true }" />
-          <span>{{ item.label }}</span>
-        </li>
-      </ul>
+      <IconSelectList :select-list="operateLists" />
     </template>
   </NPopover>
 </template>
