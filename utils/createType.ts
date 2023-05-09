@@ -1,3 +1,4 @@
+import { v4 } from 'uuid'
 import type { GroupType, ListType, TaskType } from '../types'
 
 export function createList(title?: string): ListType {
@@ -13,7 +14,7 @@ export function createGroup(title?: string): GroupType {
   return {
     title: title ?? '未命名',
     taskIds: [],
-    timesmap: Date.now(),
+    uuid: v4(),
   }
 }
 

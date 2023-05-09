@@ -12,7 +12,7 @@ export interface GroupType {
   title: string
   taskIds: number[]
   /** 为了区分不同的group加上唯一标识 */
-  timesmap: number
+  uuid: string
 }
 
 export interface TaskType {

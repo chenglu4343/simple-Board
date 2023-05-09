@@ -41,13 +41,13 @@ function handleGroupsChange(groups: GroupType[]) {
   <Draggable
     :model-value="list!.groups"
     class="overflow-y-scroll"
-    item-key="timesmap"
+    item-key="uuid"
     tag="n-collapse"
     :component-data="{
       themeOverrides: {
         dividerColor: '#6B6B77FF',
       },
-      defaultExpandedNames: list!.groups.map(item => item.timesmap),
+      defaultExpandedNames: list!.groups.map(item => item.uuid),
     }"
     @update:model-value="handleGroupsChange"
   >
@@ -56,7 +56,7 @@ function handleGroupsChange(groups: GroupType[]) {
         :list-id="currentListId"
         :group-index="index"
         :group="element" preset="operate-group" task-list-group="collaspe-group"
-        :collapse-item-name="element.timesmap"
+        :collapse-item-name="element.uuid"
         @update:group="(val) => handleGroupChange(val, index)"
         @insert-top-group="handleInsertTopGroup(index)"
         @insert-bottom-group="handleInsertBottomGroup(index)"

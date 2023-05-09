@@ -45,7 +45,7 @@ function handleDeleteGroup(currentIndex: number) {
   <Draggable
     :model-value="list!.groups"
     class="flex items-start gap-2 flex-nowrap overflow-x-scroll scrollbar"
-    item-key="timesmap"
+    item-key="uuid"
     @update:model-value="handleGroupsChange"
   >
     <template #item="{ element, index }">
