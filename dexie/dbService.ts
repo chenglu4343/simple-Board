@@ -71,7 +71,6 @@ export class TODODexie extends Dexie {
   }
 
   async deleteTask(listId: number, groupIndex: number, taskId: number) {
-    // TODO:删除task
     await this.transaction('rw', this.tasks, this.lists, async () => {
       // 获取指定的list
       const list = await this.lists.get(listId)
