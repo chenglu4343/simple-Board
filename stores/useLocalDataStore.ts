@@ -12,6 +12,7 @@ export const useLocalDataStore = defineStore('local-data', () => {
     listenToStorageChanges: false,
   })
   const isHideCompleted = useLocalStorage<boolean>('isHideCompleted', true)
+  const drawerWidth = useLocalStorage<number | undefined>('drawerWidth', undefined)
 
   const currentBoardId = computed({
     get: () => listData.value.currentBoardId,
@@ -34,6 +35,7 @@ export const useLocalDataStore = defineStore('local-data', () => {
     currentBoardId,
     isHideCompleted,
     boardIds,
+    drawerWidth,
     addBoard,
   }
 })
