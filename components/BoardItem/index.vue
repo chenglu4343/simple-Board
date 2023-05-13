@@ -9,7 +9,7 @@ defineProps({
 })
 
 const emits = defineEmits<{
-  (e: 'update:board', val: BoardType): void
+  (e: 'updateBoardTitle', val: string): void
   (e: 'deleteBoard'): void
 }>()
 
@@ -57,10 +57,7 @@ const selectList: OperateOption[] = [
               'value': board.title,
               'placeholder': '看板名称',
               'onUpdate:value': (val: string) => {
-                emits('update:board', {
-                  ...board,
-                  title: val,
-                })
+                emits('updateBoardTitle', val)
               },
             }"
           />

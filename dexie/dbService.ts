@@ -50,6 +50,10 @@ export class TODODexie extends Dexie {
     return this.boards.update(board.id!, board)
   }
 
+  async updateBoardTitle(boardId: number, title: string) {
+    return this.boards.update(boardId, { title })
+  }
+
   async addTask(boardId: number, groupIndex: number, task: TaskType) {
     let addTaskId: number | undefined
     await this.transaction('rw', this.tasks, this.boards, async () => {

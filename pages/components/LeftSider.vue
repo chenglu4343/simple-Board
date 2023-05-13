@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { cloneDeep } from 'lodash-es'
 import { storeToRefs } from 'pinia'
 import Draggable from 'vuedraggable'
 import { dbService } from '~/dexie/dbService'
@@ -39,9 +38,9 @@ function updateTaskArr() {
   })
 }
 
-async function handleUpdateBoard(board: BoardType, index: number) {
-  boardArr.value[index] = board
-  await dbService.updateBoard(cloneDeep(board))
+async function handleUpdateBoardTitle(board: BoardType, title: string) {
+  boardArr.value.find(item => item.id === board.id)!.title = title
+  await dbService.updateBoardTitle(board.id!, title)
   if (board.id === currentBoardId.value)
     updateBoard()
 }
@@ -75,7 +74,7 @@ async function handleDeleteBoard(board: BoardType, index: number) {
           class="mt-2"
           :board="element"
           :is-active="currentBoardId === element.id"
-          @update:board="handleUpdateBoard($event, index)"
+          @update-board-title="handleUpdateBoardTitle(element, $event)"
           @delete-board="handleDeleteBoard(element, index)"
           @click="currentBoardId = element.id!"
         />
