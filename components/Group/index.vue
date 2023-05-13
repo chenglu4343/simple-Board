@@ -91,6 +91,7 @@ const operateLists: OperateOption[] = [
         :input-props="{
           value: group.title,
           onUpdateValue: handleUpdateGroupTitle,
+          placeholder: '分组名称',
         }"
       />
       <PopoverList v-model:isShow="isShowOperatePopover" :operate-lists="operateLists" />

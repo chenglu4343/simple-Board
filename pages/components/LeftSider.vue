@@ -59,12 +59,13 @@ async function handleDeleteBoard(board: BoardType, index: number) {
 </script>
 
 <template>
-  <div class="h-full p-2 gap-2 box-border grid grid-rows-[auto_1fr]">
+  <div class="h-full p-4 gap-2 box-border grid grid-rows-[auto_1fr]">
     <NButton type="primary" @click="addBoard">
       新建看板
     </NButton>
 
     <Draggable
+      v-if="boardArrModel.length > 0"
       v-model="boardArrModel"
       class="overflow-y-scroll"
       item-key="id"
@@ -80,5 +81,9 @@ async function handleDeleteBoard(board: BoardType, index: number) {
         />
       </template>
     </Draggable>
+
+    <div v-else class="flex">
+      <span class="m-auto text-lg font-bold">空空如也</span>
+    </div>
   </div>
 </template>

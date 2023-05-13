@@ -5,7 +5,7 @@ import RightPanel from './components/RightPanel.vue'
 
 <template>
   <NLayout has-sider class="h-100vh">
-    <NLayoutSider show-trigger="arrow-circle" bordered collapse-mode="transform">
+    <NLayoutSider show-trigger="arrow-circle" bordered collapse-mode="transform" :collapsed-width="10">
       <LeftSider />
     </NLayoutSider>
 

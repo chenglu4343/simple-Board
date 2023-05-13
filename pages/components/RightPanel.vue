@@ -54,7 +54,7 @@ function handleDeleteGroup(currentIndex: number) {
 </script>
 
 <template>
-  <main class="p-2 h-full box-border bg-gray-1 grid gap-2 grid-rows-[auto_1fr]">
+  <main class="p-4 h-full box-border bg-gray-1 grid gap-2 grid-rows-[auto_1fr]">
     <header class="flex justify-between items-center">
       <div>
         {{ board?.title }}

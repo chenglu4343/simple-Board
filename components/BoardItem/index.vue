@@ -52,8 +52,10 @@ const selectList: OperateOption[] = [
             v-model:is-edit="isTitleEdit"
             :class="{
               'text-blue-500': isActive,
-            }" :input-props="{
+            }"
+            :input-props="{
               'value': board.title,
+              'placeholder': '看板名称',
               'onUpdate:value': (val: string) => {
                 emits('update:board', {
                   ...board,
