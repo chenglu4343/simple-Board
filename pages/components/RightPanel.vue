@@ -2,8 +2,10 @@
 import { storeToRefs } from 'pinia'
 import Draggable from 'vuedraggable'
 import { useCurrentListStore } from '~/stores/useCurrentListStore'
+import { useLocalListsDataStore } from '~/stores/useLocalListsDataStore'
 import type { GroupType } from '~/types'
 
+const { isHideCompleted } = storeToRefs(useLocalListsDataStore())
 const { list } = storeToRefs(useCurrentListStore())
 
 const { updateList } = useCurrentListStore()
@@ -55,6 +57,11 @@ function handleDeleteGroup(currentIndex: number) {
     <header class="flex justify-between items-center">
       <div>
         {{ list?.title }}
+      </div>
+
+      <div>
+        <span>是否隐藏已完成</span>
+        <NSwitch v-model:value="isHideCompleted" />
       </div>
     </header>
 

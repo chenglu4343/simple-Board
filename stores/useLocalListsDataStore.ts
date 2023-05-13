@@ -9,6 +9,7 @@ export const useLocalListsDataStore = defineStore('local-lists-data', () => {
     listIds: [],
     currentListId: null,
   })
+  const isHideCompleted = useLocalStorage<boolean>('isHideCompleted', true)
 
   const currentListId = computed({
     get: () => listData.value.currentListId,
@@ -28,6 +29,7 @@ export const useLocalListsDataStore = defineStore('local-lists-data', () => {
 
   return {
     currentListId,
+    isHideCompleted,
     listIds,
     addList,
   }
