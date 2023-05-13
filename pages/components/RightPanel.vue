@@ -7,6 +7,7 @@ import type { GroupType } from '~/types'
 
 const { isHideCompleted } = storeToRefs(useLocalDataStore())
 const { board } = storeToRefs(useCurrentBoardStore())
+const { addBoard } = useLocalDataStore()
 
 const { updateBoard } = useCurrentBoardStore()
 
@@ -93,8 +94,10 @@ function handleDeleteGroup(currentIndex: number) {
       </template>
     </Draggable>
 
-    <div v-else>
-      去新建一个清单吧！
+    <div v-else class="h-full text-xl flex font-bold">
+      <div class="cursor-pointer m-auto" @click="addBoard">
+        去新建一个看板吧！
+      </div>
     </div>
   </main>
 </template>

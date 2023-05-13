@@ -26,6 +26,7 @@ export const useLocalDataStore = defineStore('local-data', () => {
   function addBoard() {
     dbService.addBoard(createList()).then((newBoard) => {
       listData.value.boardIds.push(newBoard.id!)
+      currentBoardId.value = newBoard.id!
     })
   }
 

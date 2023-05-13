@@ -7,9 +7,9 @@ import { useCurrentBoardStore } from '~/stores/useCurrentBoardStore'
 import { useLocalDataStore } from '~/stores/useLocalDataStore'
 import type { BoardType } from '~/types'
 
-const localListDataStore = useLocalDataStore()
 const { updateBoard } = useCurrentBoardStore()
-const { currentBoardId, boardIds } = storeToRefs(localListDataStore)
+const { addBoard } = useLocalDataStore()
+const { currentBoardId, boardIds } = storeToRefs(useLocalDataStore())
 
 const boardArr = ref<BoardType[]>([])
 const boardArrModel = computed({
@@ -34,7 +34,7 @@ const boardArrModel = computed({
 watchEffect(() => updateTaskArr())
 
 function updateTaskArr() {
-  dbService.getBoardsByIds(localListDataStore.boardIds).then((boards) => {
+  dbService.getBoardsByIds(boardIds.value).then((boards) => {
     boardArr.value = boards
   })
 }
@@ -50,7 +50,7 @@ async function handleDeleteBoard(board: BoardType, index: number) {
   boardArr.value.splice(index, 1)
   await dbService.deleteBoard(board.id!)
 
-  localListDataStore.boardIds = localListDataStore.boardIds.filter(
+  boardIds.value = boardIds.value.filter(
     id => id !== board.id,
   )
   if (board.id === currentBoardId.value)
@@ -60,7 +60,7 @@ async function handleDeleteBoard(board: BoardType, index: number) {
 
 <template>
   <div class="h-full p-2 gap-2 box-border grid grid-rows-[auto_1fr]">
-    <NButton type="primary" @click="localListDataStore.addBoard">
+    <NButton type="primary" @click="addBoard">
       新建看板
     </NButton>
 
