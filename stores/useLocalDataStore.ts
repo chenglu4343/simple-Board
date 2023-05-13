@@ -8,6 +8,8 @@ export const useLocalDataStore = defineStore('local-data', () => {
   }>('lists-data', {
     boardIds: [],
     currentBoardId: null,
+  }, {
+    listenToStorageChanges: false,
   })
   const isHideCompleted = useLocalStorage<boolean>('isHideCompleted', true)
 
