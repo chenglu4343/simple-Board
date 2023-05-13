@@ -31,19 +31,36 @@ const taskArrModel = computed({
     return isHideCompleted.value ? tasksArr.value.filter(item => item.status !== 'done') : tasksArr.value
   },
   set: (val) => {
-    const idMap = new Map<number, number>()
-    taskArrModel.value.forEach((item, index) => {
-      idMap.set(item.id!, val[index].id!)
-    })
+    /** 1.进行了list内部的操作 */
+    if (val.length === taskArrModel.value.length) {
+      const idMap = new Map<number, number>()
+      taskArrModel.value.forEach((item, index) => {
+        item.id! !== val[index].id! && idMap.set(item.id!, val[index].id!)
+      })
+      tasksArr.value = tasksArr.value.map((item) => {
+        const replaceId = idMap.get(item.id!)
+        if (replaceId)
+          return tasksArr.value.find(item => item.id === replaceId)!
 
-    tasksArr.value = tasksArr.value.map((item) => {
-      const replaceId = idMap.get(item.id!)
-      if (replaceId)
-        return tasksArr.value.find(item => item.id === replaceId)!
-
-      return item
-    })
-
+        return item
+      })
+    }
+    /** 其他task移动进入了当前lists */
+    else if (val.length > taskArrModel.value.length) {
+      const newItemIndex = val.findIndex(item => !taskArrModel.value.find(item2 => item2.id === item.id))
+      if (newItemIndex === taskArrModel.value.length) {
+        tasksArr.value.push(val[newItemIndex])
+      }
+      else {
+        const insertIndex = tasksArr.value.findIndex(item => item.id === taskArrModel.value[newItemIndex].id!)
+        tasksArr.value.splice(insertIndex, 0, val[newItemIndex])
+      }
+    }
+    /** 当前task被移除 */
+    else if (val.length < taskArrModel.value.length) {
+      const removeId = taskArrModel.value.find(item => val.every(valItem => valItem.id !== item.id!))!.id!
+      tasksArr.value = tasksArr.value.filter(item => item.id !== removeId)
+    }
     emits('update:taskIds', tasksArr.value.map(item => item.id!))
   },
 })
