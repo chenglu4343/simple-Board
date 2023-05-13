@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { dbService } from '~/dexie/dbService'
 
-export const useLocalListsDataStore = defineStore('local-lists-data', () => {
+export const useLocalDataStore = defineStore('local-data', () => {
   const listData = useLocalStorage<{
     listIds: number[]
     currentListId: number | null

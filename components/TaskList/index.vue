@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia'
 import { array, number, string } from 'vue-types'
 import Draggable from 'vuedraggable'
 import { dbService } from '~/dexie/dbService'
-import { useLocalListsDataStore } from '~/stores/useLocalListsDataStore'
+import { useLocalDataStore } from '~/stores/useLocalDataStore'
 import type { TaskType } from '~/types'
 
 const props = defineProps({
@@ -18,7 +18,7 @@ const emits = defineEmits<{
   (e: 'needUpdateList'): void
 }>()
 
-const { isHideCompleted } = storeToRefs(useLocalListsDataStore())
+const { isHideCompleted } = storeToRefs(useLocalDataStore())
 
 defineOptions({
   name: 'TaskList',

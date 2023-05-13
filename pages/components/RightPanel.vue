@@ -2,10 +2,10 @@
 import { storeToRefs } from 'pinia'
 import Draggable from 'vuedraggable'
 import { useCurrentListStore } from '~/stores/useCurrentListStore'
-import { useLocalListsDataStore } from '~/stores/useLocalListsDataStore'
+import { useLocalDataStore } from '~/stores/useLocalDataStore'
 import type { GroupType } from '~/types'
 
-const { isHideCompleted } = storeToRefs(useLocalListsDataStore())
+const { isHideCompleted } = storeToRefs(useLocalDataStore())
 const { list } = storeToRefs(useCurrentListStore())
 
 const { updateList } = useCurrentListStore()

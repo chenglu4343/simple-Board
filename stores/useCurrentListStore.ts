@@ -1,11 +1,11 @@
 import { defineStore, storeToRefs } from 'pinia'
 import { cloneDeep } from 'lodash-es'
-import { useLocalListsDataStore } from './useLocalListsDataStore'
+import { useLocalDataStore } from './useLocalDataStore'
 import type { ListType } from '~/types'
 import { dbService } from '~/dexie/dbService'
 
 export const useCurrentListStore = defineStore('current-list', () => {
-  const { currentListId: listId } = storeToRefs(useLocalListsDataStore())
+  const { currentListId: listId } = storeToRefs(useLocalDataStore())
 
   const currentList = ref<ListType | null>(createList())
 

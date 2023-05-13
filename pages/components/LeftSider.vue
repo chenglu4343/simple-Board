@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { dbService } from '~/dexie/dbService'
-import { useLocalListsDataStore } from '~/stores/useLocalListsDataStore'
+import { useLocalDataStore } from '~/stores/useLocalDataStore'
 import type { ListType } from '~/types'
 
-const localListDataStore = useLocalListsDataStore()
+const localListDataStore = useLocalDataStore()
 const { currentListId } = storeToRefs(localListDataStore)
 
 const collectionList = ref(createList())
