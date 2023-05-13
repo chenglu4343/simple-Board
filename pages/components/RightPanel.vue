@@ -65,7 +65,7 @@ function handleClickText() {
         {{ board?.title }}
       </div>
 
-      <div class="min-w-max">
+      <div class="min-w-max flex items-center gap-2">
         <span>隐藏已完成</span>
         <NSwitch v-model:value="isHideCompleted" />
       </div>
