@@ -42,13 +42,13 @@ const selectList: OperateOption[] = [
     <RightClickManualPopover v-model:show="isShowPopover">
       <template #default>
         <div
-          class="flex items-center gap-2 p-2 cursor-pointer rounded-2"
+          class="grid gap-2 p-2 cursor-pointer rounded-2 box-border grid-cols-[auto_1fr] items-center"
           :class="{
             'bg-gray-3': isActive,
             'hover:bg-gray-3': !isDrag,
           }"
         >
-          <div class="i-ant-design:menu-outlined" />
+          <div class="i-ant-design:menu-outlined w-10" />
 
           <FocusInput
             v-model:is-edit="isTitleEdit"
