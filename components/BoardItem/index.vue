@@ -1,24 +1,24 @@
 <script setup lang="ts">
 import { bool, object } from 'vue-types'
 import type { OperateOption } from '../IconSelectList'
-import type { ListType } from '~/types'
+import type { BoardType } from '~/types'
 
 defineProps({
-  list: object<ListType>().isRequired,
+  board: object<BoardType>().isRequired,
   isActive: bool(),
 })
 
 const selectList: OperateOption[] = [
   {
     icon: 'i-ant-design:pic-left-outlined',
-    label: '重命名list,等引入dir再看看',
+    label: '重命名board',
     onClick: () => {
       // TODO
     },
   },
   {
     icon: 'i-ant-design:delete-outlined',
-    label: '删除list,等引入dir再看看',
+    label: '删除board',
     onClick: () => {
       // TODO
     },
@@ -42,7 +42,7 @@ const selectList: OperateOption[] = [
             :class="{
               'text-blue-500': isActive,
             }"
-          >{{ list.title }}</span>
+          >{{ board.title }}</span>
         </div>
       </template>
 

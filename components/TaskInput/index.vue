@@ -3,12 +3,12 @@ import { number } from 'vue-types'
 import { dbService } from '~/dexie/dbService'
 
 const props = defineProps({
-  listId: number().isRequired,
+  boardId: number().isRequired,
   groupIndex: number().isRequired,
 })
 
 const emits = defineEmits<{
-  (e: 'needUpdateList'): void
+  (e: 'needUpdateBoard'): void
 }>()
 
 defineOptions({
@@ -21,10 +21,10 @@ async function handleInputEnter() {
   if (!taskInputVal.value)
     return
 
-  await dbService.addTask(props.listId, props.groupIndex, createTask(taskInputVal.value))
+  await dbService.addTask(props.boardId, props.groupIndex, createTask(taskInputVal.value))
 
   taskInputVal.value = ''
-  emits('needUpdateList')
+  emits('needUpdateBoard')
 }
 </script>
 

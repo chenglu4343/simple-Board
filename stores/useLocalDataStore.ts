@@ -3,34 +3,34 @@ import { dbService } from '~/dexie/dbService'
 
 export const useLocalDataStore = defineStore('local-data', () => {
   const listData = useLocalStorage<{
-    listIds: number[]
-    currentListId: number | null
+    boardIds: number[]
+    currentBoardId: number | null
   }>('lists-data', {
-    listIds: [],
-    currentListId: null,
+    boardIds: [],
+    currentBoardId: null,
   })
   const isHideCompleted = useLocalStorage<boolean>('isHideCompleted', true)
 
-  const currentListId = computed({
-    get: () => listData.value.currentListId,
-    set: (val) => { listData.value.currentListId = val },
+  const currentBoardId = computed({
+    get: () => listData.value.currentBoardId,
+    set: (val) => { listData.value.currentBoardId = val },
   })
 
-  const listIds = computed({
-    get: () => listData.value.listIds,
-    set: (val) => { listData.value.listIds = val },
+  const boardIds = computed({
+    get: () => listData.value.boardIds,
+    set: (val) => { listData.value.boardIds = val },
   })
 
-  function addList() {
-    dbService.addList(createList()).then((newList) => {
-      listData.value.listIds.push(newList.id!)
+  function addBoard() {
+    dbService.addBoard(createList()).then((newBoard) => {
+      listData.value.boardIds.push(newBoard.id!)
     })
   }
 
   return {
-    currentListId,
+    currentBoardId,
     isHideCompleted,
-    listIds,
-    addList,
+    boardIds,
+    addBoard,
   }
 })

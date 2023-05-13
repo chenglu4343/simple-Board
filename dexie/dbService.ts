@@ -1,65 +1,65 @@
 import type { Table } from 'dexie'
 import Dexie from 'dexie'
-import type { ListType, TaskType } from '~/types'
+import type { BoardType, TaskType } from '~/types'
 
 export class TODODexie extends Dexie {
   tasks!: Table<TaskType>
-  lists!: Table<ListType>
+  boards!: Table<BoardType>
 
   constructor() {
     super('TODODexie')
     this.version(1).stores({
       tasks: '++id, title, content, status',
-      lists: '++id, title, groups, icon',
+      boards: '++id, title, groups',
     })
   }
 
-  async addList(list: ListType) {
-    const id = await this.lists.add(list) as ListType['id']
+  async addBoard(board: BoardType) {
+    const id = await this.boards.add(board) as BoardType['id']
 
     return {
-      ...list,
+      ...board,
       id,
     }
   }
 
-  async getListById(id: number) {
-    return this.lists.get(id)
+  async getBoardById(id: number) {
+    return this.boards.get(id)
   }
 
-  async getListsByIds(ids: number[]) {
-    const lists = await this.lists.where('id').anyOf(ids).toArray()
-    const idMap = new Map<number, ListType>()
-    lists.forEach((list) => {
-      idMap.set(list.id as number, list)
+  async getBoardsByIds(ids: number[]) {
+    const boards = await this.boards.where('id').anyOf(ids).toArray()
+    const idMap = new Map<number, BoardType>()
+    boards.forEach((board) => {
+      idMap.set(board.id as number, board)
     })
     const sortedTasks = ids.map(id => idMap.get(id)!)
 
     return sortedTasks
   }
 
-  async updateList(list: ListType) {
-    return this.lists.update(list.id!, list)
+  async updateBoard(board: BoardType) {
+    return this.boards.update(board.id!, board)
   }
 
-  async addTask(listId: number, groupIndex: number, task: TaskType) {
+  async addTask(boardId: number, groupIndex: number, task: TaskType) {
     let addTaskId: number | undefined
-    await this.transaction('rw', this.tasks, this.lists, async () => {
-      // 获取指定的list
-      const list = await this.lists.get(listId)
-      if (!list)
-        throw new Error(`List with id ${listId} not found`)
+    await this.transaction('rw', this.tasks, this.boards, async () => {
+      // 获取指定的board
+      const board = await this.boards.get(boardId)
+      if (!board)
+        throw new Error(`Board with id ${boardId} not found`)
 
       // 获取或创建指定的group
-      const group = list.groups[groupIndex] || createGroup()
+      const group = board.groups[groupIndex] || createGroup()
 
       // 添加task到group中
       addTaskId = await this.tasks.add(task) as NonNullable<TaskType['id']>
       group.taskIds = [addTaskId, ...group.taskIds]
 
-      // 更新list中的group
-      list.groups[groupIndex] = group
-      await this.lists.update(listId, { groups: list.groups })
+      // 更新board中的group
+      board.groups[groupIndex] = group
+      await this.boards.update(boardId, { groups: board.groups })
     })
 
     return {
@@ -68,22 +68,22 @@ export class TODODexie extends Dexie {
     }
   }
 
-  async deleteTask(listId: number, groupIndex: number, taskId: number) {
-    await this.transaction('rw', this.tasks, this.lists, async () => {
-      // 获取指定的list
-      const list = await this.lists.get(listId)
-      if (!list)
-        throw new Error(`List with id ${listId} not found`)
+  async deleteTask(boardId: number, groupIndex: number, taskId: number) {
+    await this.transaction('rw', this.tasks, this.boards, async () => {
+      // 获取指定的board
+      const board = await this.boards.get(boardId)
+      if (!board)
+        throw new Error(`Board with id ${boardId} not found`)
 
       // 获取或创建指定的group
-      const group = list.groups[groupIndex]
+      const group = board.groups[groupIndex]
 
       // 删除task
       group.taskIds = group.taskIds.filter(id => id !== taskId)
 
-      // 更新list中的group
-      list.groups[groupIndex] = group
-      await this.lists.update(listId, { groups: list.groups })
+      // 更新board中的group
+      board.groups[groupIndex] = group
+      await this.boards.update(boardId, { groups: board.groups })
 
       // 删除task
       await this.tasks.delete(taskId)

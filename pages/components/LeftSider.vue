@@ -2,40 +2,36 @@
 import { storeToRefs } from 'pinia'
 import { dbService } from '~/dexie/dbService'
 import { useLocalDataStore } from '~/stores/useLocalDataStore'
-import type { ListType } from '~/types'
+import type { BoardType } from '~/types'
 
 const localListDataStore = useLocalDataStore()
-const { currentListId } = storeToRefs(localListDataStore)
+const { currentBoardId } = storeToRefs(localListDataStore)
 
-const collectionList = ref(createList())
-const listArr = ref<ListType[]>([])
+const boardArr = ref<BoardType[]>([])
 
 watchEffect(() => updateTaskArr())
-dbService.getListById(-1).then((list) => {
-  collectionList.value = list!
-})
 
 function updateTaskArr() {
-  dbService.getListsByIds(localListDataStore.listIds).then((lists) => {
-    listArr.value = lists
+  dbService.getBoardsByIds(localListDataStore.boardIds).then((boards) => {
+    boardArr.value = boards
   })
 }
 </script>
 
 <template>
   <div class="h-full p-2 gap-2 box-border grid grid-rows-[auto_1fr]">
-    <NButton type="primary" @click="localListDataStore.addList">
+    <NButton type="primary" @click="localListDataStore.addBoard">
       新建看板
     </NButton>
 
     <div class="overflow-y-scroll">
       <BoardItem
-        v-for="list of listArr"
-        :key="list.id!"
+        v-for="board of boardArr"
+        :key="board.id!"
         class="mt-2"
-        :list="list"
-        :is-active="currentListId === list.id"
-        @click="currentListId = list.id!"
+        :board="board"
+        :is-active="currentBoardId === board.id"
+        @click="currentBoardId = board.id!"
       />
     </div>
   </div>

@@ -7,7 +7,7 @@ import { useLocalDataStore } from '~/stores/useLocalDataStore'
 import type { TaskType } from '~/types'
 
 const props = defineProps({
-  listId: number().isRequired,
+  boardId: number().isRequired,
   group: string(),
   groupIndex: number().isRequired,
   taskIds: array<number>().def(() => []),
@@ -15,7 +15,7 @@ const props = defineProps({
 
 const emits = defineEmits<{
   (e: 'update:taskIds', taskIds: number[]): void
-  (e: 'needUpdateList'): void
+  (e: 'needUpdateBoard'): void
 }>()
 
 const { isHideCompleted } = storeToRefs(useLocalDataStore())
@@ -65,10 +65,10 @@ function updateTaskArr() {
     <template #item="{ element }">
       <Task
         :task="element"
-        :list-id="listId"
+        :board-id="boardId"
         :group-index="groupIndex"
         @update:task="updateTaskArr"
-        @need-update-list="emits('needUpdateList')"
+        @need-update-board="emits('needUpdateBoard')"
       />
     </template>
   </Draggable>

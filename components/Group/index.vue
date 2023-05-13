@@ -5,7 +5,7 @@ import type { OperateOption } from '../IconSelectList'
 import type { GroupType } from '~/types'
 
 const props = defineProps({
-  listId: number().isRequired,
+  boardId: number().isRequired,
   groupIndex: number().isRequired,
   group: object<GroupType>().isRequired,
   taskListGroup: string(),
@@ -16,7 +16,7 @@ const emits = defineEmits<{
   (e: 'insertLeftGroup'): void
   (e: 'insertRightGroup'): void
   (e: 'deleteGroup'): void
-  (e: 'needUpdateList'): void
+  (e: 'needUpdateBoard'): void
 }>()
 
 defineOptions({
@@ -95,14 +95,14 @@ const operateLists: OperateOption[] = [
       />
       <PopoverList v-model:isShow="isShowOperatePopover" :operate-lists="operateLists" />
     </div>
-    <TaskInput :list-id="listId" :group-index="groupIndex" @need-update-list="emits('needUpdateList')" />
+    <TaskInput :board-id="boardId" :group-index="groupIndex" @need-update-board="emits('needUpdateBoard')" />
     <TaskList
-      :list-id="listId"
+      :board-id="boardId"
       :group-index="groupIndex"
       :task-ids="group.taskIds"
       :group="taskListGroup"
       class="m-h-0 overflow-y-scroll"
-      @need-update-list="emits('needUpdateList')"
+      @need-update-board="emits('needUpdateBoard')"
       @update:task-ids="handleUpdateTaskIds"
     />
   </div>

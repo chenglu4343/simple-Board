@@ -4,14 +4,14 @@ import { dbService } from '~/dexie/dbService'
 import type { TaskType } from '~/types'
 
 const props = defineProps({
-  listId: number().isRequired,
+  boardId: number().isRequired,
   groupIndex: number().isRequired,
   task: object<TaskType>().isRequired,
 })
 
 const emits = defineEmits<{
   (e: 'update:task', task: TaskType): void
-  (e: 'needUpdateList'): void
+  (e: 'needUpdateBoard'): void
 }>()
 
 defineOptions({
@@ -38,8 +38,8 @@ function handleEditTask() {
 }
 
 async function handleDeleteTask() {
-  await dbService.deleteTask(props.listId, props.groupIndex, props.task.id!)
-  emits('needUpdateList')
+  await dbService.deleteTask(props.boardId, props.groupIndex, props.task.id!)
+  emits('needUpdateBoard')
 }
 </script>
 
