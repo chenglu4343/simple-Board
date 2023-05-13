@@ -13,7 +13,7 @@ defineOptions({
 </script>
 
 <template>
-  <ul class="list-none p-0 cursor-pointer">
+  <ul class="list-none p-0 cursor-pointer my-2">
     <li
       v-for="(item, index) of selectList"
       :key="index"
