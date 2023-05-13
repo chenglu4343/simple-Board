@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { number, object } from 'vue-types'
+import { bool, number, object } from 'vue-types'
 import { dbService } from '~/dexie/dbService'
 import type { TaskType } from '~/types'
 
@@ -7,6 +7,7 @@ const props = defineProps({
   boardId: number().isRequired,
   groupIndex: number().isRequired,
   task: object<TaskType>().isRequired,
+  isDrag: bool(),
 })
 
 const emits = defineEmits<{
@@ -48,7 +49,8 @@ async function handleDeleteTask() {
     <RightClickManualPopover>
       <template #default>
         <div
-          class="cursor-pointer grid grid-cols-[auto_1fr] gap-2 hover:bg-gray-3 p-2 rounded-2 min-w-0 overflow-x-hidden"
+          class="cursor-pointer grid grid-cols-[auto_1fr] gap-2  p-2 rounded-2 min-w-0 overflow-x-hidden"
+          :class="!isDrag && 'hover:bg-gray-3'"
           @click="handleEditTask"
         >
           <NCheckbox

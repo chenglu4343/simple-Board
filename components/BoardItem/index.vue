@@ -4,6 +4,7 @@ import type { OperateOption } from '../IconSelectList'
 import type { BoardType } from '~/types'
 
 defineProps({
+  isDrag: bool(),
   board: object<BoardType>().isRequired,
   isActive: bool(),
 })
@@ -41,9 +42,10 @@ const selectList: OperateOption[] = [
     <RightClickManualPopover v-model:show="isShowPopover">
       <template #default>
         <div
-          class="flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-3 rounded-2"
+          class="flex items-center gap-2 p-2 cursor-pointer rounded-2"
           :class="{
             'bg-gray-3': isActive,
+            'hover:bg-gray-3': !isDrag,
           }"
         >
           <div class="i-ant-design:menu-outlined" />

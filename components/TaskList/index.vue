@@ -19,6 +19,7 @@ const emits = defineEmits<{
 }>()
 
 const { isHideCompleted } = storeToRefs(useLocalDataStore())
+const { draggableProps, isDrag } = useDraggableIsDrag()
 
 defineOptions({
   name: 'TaskList',
@@ -61,9 +62,12 @@ function updateTaskArr() {
     v-model="taskArrModel"
     item-key="id"
     :group="group"
+    ghost-class="ghost-class"
+    v-bind="draggableProps"
   >
     <template #item="{ element }">
       <Task
+        :is-drag="isDrag"
         :task="element"
         :board-id="boardId"
         :group-index="groupIndex"

@@ -14,4 +14,7 @@ export default defineConfig({
       warn: true,
     }),
   ],
+  shortcuts: {
+    'ghost-class': 'bg-gray-3 rounded-2',
+  },
 })

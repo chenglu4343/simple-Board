@@ -29,6 +29,7 @@ const boardArrModel = computed({
     boardIds.value = boardArr.value.map(item => item.id!)
   },
 })
+const { draggableProps, isDrag } = useDraggableIsDrag()
 
 watchEffect(() => updateTaskArr())
 
@@ -67,12 +68,15 @@ async function handleDeleteBoard(board: BoardType, index: number) {
       v-if="boardArrModel.length > 0"
       v-model="boardArrModel"
       class="overflow-y-scroll"
+      ghost-class="ghost-class"
       item-key="id"
+      v-bind="draggableProps"
     >
       <template #item="{ element, index }">
         <BoardItem
           class="mt-2"
           :board="element"
+          :is-drag="isDrag"
           :is-active="currentBoardId === element.id"
           @update-board-title="handleUpdateBoardTitle(element, $event)"
           @delete-board="handleDeleteBoard(element, index)"
