@@ -36,12 +36,7 @@ const selectList: OperateOption[] = [
             'bg-gray-3': isActive,
           }"
         >
-          <div
-            :class="{
-              'i-ant-design:inbox-outlined': list.icon === 'collection',
-              'i-ant-design:menu-outlined': list.icon === 'list',
-            }"
-          />
+          <div class="i-ant-design:menu-outlined" />
 
           <span
             :class="{

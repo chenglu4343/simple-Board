@@ -4,10 +4,10 @@ import { dbService } from '~/dexie/dbService'
 export const useLocalListsDataStore = defineStore('local-lists-data', () => {
   const listData = useLocalStorage<{
     listIds: number[]
-    currentListId: number
+    currentListId: number | null
   }>('lists-data', {
     listIds: [],
-    currentListId: -1,
+    currentListId: null,
   })
 
   const currentListId = computed({

@@ -7,11 +7,13 @@ import { dbService } from '~/dexie/dbService'
 export const useCurrentListStore = defineStore('current-list', () => {
   const { currentListId: listId } = storeToRefs(useLocalListsDataStore())
 
-  const currentList = ref<ListType>(createList())
-  const isList = computed(() => currentList.value?.showingMode === 'list')
-  const isBoard = computed(() => currentList.value?.showingMode === 'board')
+  const currentList = ref<ListType | null>(createList())
 
-  watchEffect(() => updateList())
+  watch(() => listId.value, () => {
+    updateList()
+  }, {
+    immediate: true,
+  })
 
   /**
      * 存在同时变更list数据时(例如从一个group拖拽到另外一个group)，
@@ -25,6 +27,10 @@ export const useCurrentListStore = defineStore('current-list', () => {
 
   /** dexie中数据已经更改时调用，更新list数据 */
   function updateList() {
+    if (listId.value === null) {
+      currentList.value = null
+      return
+    }
     dbService.getListById(listId.value).then((queryList) => {
       currentList.value = queryList!
     })
@@ -41,8 +47,6 @@ export const useCurrentListStore = defineStore('current-list', () => {
         saveListToDexie()
       },
     }),
-    isList,
-    isBoard,
     updateList,
   }
 })

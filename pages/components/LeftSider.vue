@@ -23,27 +23,20 @@ function updateTaskArr() {
 </script>
 
 <template>
-  <div class="h-full p-2 box-border">
+  <div class="h-full p-2 gap-2 box-border grid grid-rows-[auto_1fr]">
     <NButton type="primary" @click="localListDataStore.addList">
-      新建清单
+      新建看板
     </NButton>
 
-    <ListItem
-      class="mt-2"
-      :list="collectionList"
-      :is-active="currentListId === -1"
-      @click="currentListId = -1"
-    />
-
-    <hr v-if="listArr.length > 0">
-
-    <ListItem
-      v-for="list of listArr"
-      :key="list.id!"
-      class="mt-2"
-      :list="list"
-      :is-active="currentListId === list.id"
-      @click="currentListId = list.id!"
-    />
+    <div class="overflow-y-scroll">
+      <BoardItem
+        v-for="list of listArr"
+        :key="list.id!"
+        class="mt-2"
+        :list="list"
+        :is-active="currentListId === list.id"
+        @click="currentListId = list.id!"
+      />
+    </div>
   </div>
 </template>

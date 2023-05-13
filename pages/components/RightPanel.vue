@@ -1,63 +1,93 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import BoardView from './BoardView.vue'
-import MultiGroupListView from './MultiGroupListView.vue'
-import type { GroupType } from '~/types'
+import Draggable from 'vuedraggable'
 import { useCurrentListStore } from '~/stores/useCurrentListStore'
-import { useLocalListsDataStore } from '~/stores/useLocalListsDataStore'
+import type { GroupType } from '~/types'
 
-const { list, isList, isBoard } = storeToRefs(useCurrentListStore())
-const { currentListId } = storeToRefs(useLocalListsDataStore())
+const { list } = storeToRefs(useCurrentListStore())
+
 const { updateList } = useCurrentListStore()
 
-function handleSwitchModeChange(val: boolean) {
-  list.value = {
-    ...list.value!,
-    showingMode: val ? 'board' : 'list',
-  }
-}
-function handleFirstGroupTaskIdsChange(taskIds: number[]) {
-  handleGroupsChange([
-    {
-      ...list.value!.groups[0],
-      taskIds,
-    },
-  ])
-}
 function handleGroupsChange(groups: GroupType[]) {
   list.value = {
     ...list.value!,
     groups,
   }
 }
+
+function handleGroupChange(group: GroupType, index: number) {
+  handleGroupsChange([
+    ...list.value!.groups.slice(0, index),
+    group,
+    ...list.value!.groups.slice(index + 1),
+  ])
+}
+function handleAddGroup() {
+  handleGroupsChange([
+    ...list.value!.groups,
+    createGroup(),
+  ])
+}
+function handleInsertLeftGroup(currentIndex: number) {
+  handleGroupsChange([
+    ...list.value!.groups.slice(0, currentIndex),
+    createGroup(),
+    ...list.value!.groups.slice(currentIndex),
+  ])
+}
+function handleInsertRightGroup(currentIndex: number) {
+  handleGroupsChange([
+    ...list.value!.groups.slice(0, currentIndex + 1),
+    createGroup(),
+    ...list.value!.groups.slice(currentIndex + 1),
+  ])
+}
+function handleDeleteGroup(currentIndex: number) {
+  handleGroupsChange([
+    ...list.value!.groups.slice(0, currentIndex),
+    ...list.value!.groups.slice(currentIndex + 1),
+  ])
+}
 </script>
 
 <template>
-  <main
-    class="p-2 h-100vh box-border bg-gray-1 grid gap-2"
-    :class="{
-      'grid-rows-[auto_auto_1fr]': isList,
-      'grid-rows-[auto_1fr]': isBoard,
-    }"
-  >
+  <main class="p-2 h-full box-border bg-gray-1 grid gap-2 grid-rows-[auto_1fr]">
     <header class="flex justify-between items-center">
       <div>
         {{ list?.title }}
       </div>
-      <div v-if="!list?.disableChangeMode">
-        {{ isBoard ? '看板模式' : '清单模式' }}
-        <NSwitch :value="isBoard" :on-update-value="handleSwitchModeChange" />
-      </div>
     </header>
 
-    <TaskInput v-if="isList" :list-id="currentListId" :group-index="0" @need-update-list="updateList" />
+    <Draggable
+      v-if="list"
+      :model-value="list.groups"
+      class="flex items-start gap-2 flex-nowrap overflow-x-scroll scrollbar p-2"
+      item-key="uuid"
+      @update:model-value="handleGroupsChange"
+    >
+      <template #item="{ element, index }">
+        <Group
+          :list-id="list.id!"
+          :group-index="index"
+          :group="element"
+          task-list-group="list-group"
+          class="min-w-60 max-w-60"
+          @need-update-list="updateList"
+          @update:group="(val) => handleGroupChange(val, index)"
+          @insert-left-group="handleInsertLeftGroup(index)"
+          @insert-right-group="handleInsertRightGroup(index)"
+          @delete-group="handleDeleteGroup(index)"
+        />
+      </template>
+      <template #footer>
+        <NButton type="primary" @click="handleAddGroup">
+          添加分组
+        </NButton>
+      </template>
+    </Draggable>
 
-    <template v-if="isList && list?.groups.length === 1">
-      <TaskList :list-id="currentListId" :group-index="0" :task-ids="list.groups[0].taskIds" @need-update-list="updateList" @update:task-ids="handleFirstGroupTaskIdsChange" />
-    </template>
-
-    <MultiGroupListView v-else-if="isList && list!.groups.length > 1" />
-
-    <BoardView v-else-if="isBoard" />
+    <div v-else>
+      去新建一个清单吧！
+    </div>
   </main>
 </template>
