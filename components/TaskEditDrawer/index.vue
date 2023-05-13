@@ -35,7 +35,7 @@ const handleUpdateTaskContent = useUpdateObjKey({
 
 <template>
   <NDrawer v-model:show="show" placement="right">
-    <div class="h-full grid grid-rows-[auto_1fr] gap-2 p-2">
+    <div class="box-border h-full grid grid-rows-[auto_1fr] gap-2 p-2">
       <NInput
         :value="task.title"
         placeholder="输入title"
