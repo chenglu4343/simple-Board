@@ -5,7 +5,7 @@ import { useCurrentBoardStore } from '~/stores/useCurrentBoardStore'
 import { useLocalDataStore } from '~/stores/useLocalDataStore'
 import type { GroupType } from '~/types'
 
-const { isHideCompleted } = storeToRefs(useLocalDataStore())
+const { isHideCompleted, boardIds } = storeToRefs(useLocalDataStore())
 const { board } = storeToRefs(useCurrentBoardStore())
 const { addBoard } = useLocalDataStore()
 
@@ -51,6 +51,11 @@ function handleDeleteGroup(currentIndex: number) {
     ...board.value!.groups.slice(currentIndex + 1),
   ])
 }
+
+function handleClickText() {
+  if (boardIds.value.length === 0)
+    addBoard()
+}
 </script>
 
 <template>
@@ -95,8 +100,8 @@ function handleDeleteGroup(currentIndex: number) {
     </Draggable>
 
     <div v-else class="h-full text-xl flex font-bold">
-      <div class="cursor-pointer m-auto" @click="addBoard">
-        去新建一个看板吧！
+      <div class="cursor-pointer m-auto" @click="handleClickText">
+        去{{ boardIds.length > 0 ? '选择' : '新建' }}一个看板吧！
       </div>
     </div>
   </main>
