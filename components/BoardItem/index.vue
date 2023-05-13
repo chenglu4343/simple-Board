@@ -8,19 +8,29 @@ defineProps({
   isActive: bool(),
 })
 
+const emits = defineEmits<{
+  (e: 'update:board', val: BoardType): void
+  (e: 'deleteBoard'): void
+}>()
+
+const isShowPopover = ref(false)
+const isTitleEdit = ref(false)
+
 const selectList: OperateOption[] = [
   {
     icon: 'i-ant-design:pic-left-outlined',
-    label: '重命名board',
+    label: '重命名',
     onClick: () => {
-      // TODO
+      isTitleEdit.value = true
+      isShowPopover.value = false
     },
   },
   {
     icon: 'i-ant-design:delete-outlined',
-    label: '删除board',
+    label: '删除',
     onClick: () => {
-      // TODO
+      emits('deleteBoard')
+      isShowPopover.value = false
     },
   },
 ]
@@ -28,21 +38,30 @@ const selectList: OperateOption[] = [
 
 <template>
   <div>
-    <RightClickManualPopover>
+    <RightClickManualPopover v-model:show="isShowPopover">
       <template #default>
         <div
-          class="flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-3 p-2 rounded-2"
+          class="flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-3 rounded-2"
           :class="{
             'bg-gray-3': isActive,
           }"
         >
           <div class="i-ant-design:menu-outlined" />
 
-          <span
+          <FocusInput
+            v-model:is-edit="isTitleEdit"
             :class="{
               'text-blue-500': isActive,
+            }" :input-props="{
+              'value': board.title,
+              'onUpdate:value': (val: string) => {
+                emits('update:board', {
+                  ...board,
+                  title: val,
+                })
+              },
             }"
-          >{{ board.title }}</span>
+          />
         </div>
       </template>
 

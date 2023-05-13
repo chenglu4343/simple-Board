@@ -17,7 +17,7 @@ defineOptions({
     <li
       v-for="(item, index) of selectList"
       :key="index"
-      class="hover:bg-gray-1 flex items-center gap-2"
+      class="hover:bg-gray-1 flex items-center gap-2 m-0"
       @click="item.onClick"
     >
       <div :class="{ [item.icon]: true }" />

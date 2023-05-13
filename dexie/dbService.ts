@@ -23,6 +23,14 @@ export class TODODexie extends Dexie {
     }
   }
 
+  async deleteBoard(boardId: number) {
+    await this.transaction('rw', this.tasks, this.boards, async () => {
+      const board = await this.boards.get(boardId)
+      const taskIds = board?.groups.flatMap(group => group.taskIds) || []
+      await Promise.all([this.boards.delete(boardId), ...taskIds.map(id => this.tasks.delete(id))])
+    })
+  }
+
   async getBoardById(id: number) {
     return this.boards.get(id)
   }

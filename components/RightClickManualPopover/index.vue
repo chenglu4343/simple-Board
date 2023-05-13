@@ -1,5 +1,17 @@
 <script setup lang="ts">
-const isShowToolPopover = ref(false)
+import { bool } from 'vue-types'
+
+const props = defineProps({
+  show: bool(),
+})
+
+const emits = defineEmits<{
+  (e: 'update:show', val: boolean): void
+}>()
+
+const isShowToolPopover = useVModel(props, 'show', emits, {
+  passive: true,
+})
 const toolPopoverX = ref(0)
 const toolPopoverY = ref(0)
 
