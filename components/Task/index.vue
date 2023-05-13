@@ -44,23 +44,23 @@ async function handleDeleteTask() {
 </script>
 
 <template>
-  <div
-    class="cursor-pointer grid grid-cols-[auto_1fr] gap-2 hover:bg-gray-3 p-2 rounded-2 min-w-0 overflow-x-hidden"
-    @click="handleEditTask"
-  >
-    <NCheckbox
-      :checked="task.status === 'done'"
-      @update:checked="handleTaskStatusChange"
-      @click.stop="() => {}"
-    />
-
-    <RightClickManualPopover
-      :default-attrs="{
-        class: 'whitespace-nowrap text-ellipsis overflow-x-hidden',
-      }"
-    >
+  <div>
+    <RightClickManualPopover>
       <template #default>
-        {{ task.title }}
+        <div
+          class="cursor-pointer grid grid-cols-[auto_1fr] gap-2 hover:bg-gray-3 p-2 rounded-2 min-w-0 overflow-x-hidden"
+          @click="handleEditTask"
+        >
+          <NCheckbox
+            :checked="task.status === 'done'"
+            @update:checked="handleTaskStatusChange"
+            @click.stop="() => {}"
+          />
+
+          <div class="whitespace-nowrap text-ellipsis overflow-x-hidden">
+            {{ task.title }}
+          </div>
+        </div>
       </template>
       <template #popover>
         <div class="flex gap-2 p-2 items-center cursor-pointer" @click="handleDeleteTask">
