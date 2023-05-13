@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { bool } from 'vue-types'
+import { any, bool } from 'vue-types'
 
 const props = defineProps({
   show: bool(),
+  defaultAttrs: any(),
 })
 
 const emits = defineEmits<{
@@ -23,7 +24,7 @@ function handleRightClick(e: MouseEvent) {
 </script>
 
 <template>
-  <div @click.prevent.right="handleRightClick">
+  <div v-bind="defaultAttrs" @click.prevent.right="handleRightClick">
     <slot />
   </div>
 

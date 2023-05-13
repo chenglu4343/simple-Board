@@ -55,13 +55,13 @@ function handleDeleteGroup(currentIndex: number) {
 
 <template>
   <main class="p-4 h-full box-border bg-gray-1 grid gap-2 grid-rows-[auto_1fr]">
-    <header class="flex justify-between items-center">
-      <div>
+    <header class="flex justify-between items-center min-w-full">
+      <div class="min-w-0 whitespace-nowrap text-ellipsis overflow-x-hidden">
         {{ board?.title }}
       </div>
 
-      <div>
-        <span>是否隐藏已完成</span>
+      <div class="min-w-max">
+        <span>隐藏已完成</span>
         <NSwitch v-model:value="isHideCompleted" />
       </div>
     </header>

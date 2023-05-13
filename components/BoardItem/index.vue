@@ -50,6 +50,7 @@ const selectList: OperateOption[] = [
 
           <FocusInput
             v-model:is-edit="isTitleEdit"
+            class="min-w-0 whitespace-nowrap text-ellipsis overflow-x-hidden"
             :class="{
               'text-blue-500': isActive,
             }"
