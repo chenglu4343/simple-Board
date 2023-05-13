@@ -5,17 +5,23 @@ import { useCurrentBoardStore } from '~/stores/useCurrentBoardStore'
 import { useLocalDataStore } from '~/stores/useLocalDataStore'
 import type { GroupType } from '~/types'
 
+const mainRef = ref<HTMLElement | null>(null)
+const draggableRef = ref<InstanceType<typeof Draggable> | null>(null)
 const { isHideCompleted, boardIds } = storeToRefs(useLocalDataStore())
 const { board } = storeToRefs(useCurrentBoardStore())
 const { addBoard } = useLocalDataStore()
-
 const { updateBoard } = useCurrentBoardStore()
+const { pressed } = useClickDrag({
+  clickRef: mainRef,
+  scrollElement: () => draggableRef.value?.$el,
+})
 
 function handleGroupsChange(groups: GroupType[]) {
   board.value = {
     ...board.value!,
     groups,
   }
+  pressed.value = false
 }
 
 function handleGroupChange(group: GroupType, index: number) {
@@ -59,7 +65,12 @@ function handleClickText() {
 </script>
 
 <template>
-  <main class="p-4 h-full box-border bg-gray-1 grid gap-2 grid-rows-[auto_1fr]">
+  <main
+    ref="mainRef" class="p-4 h-full box-border bg-gray-1 grid gap-2 grid-rows-[auto_1fr]"
+    :class="{
+      'select-none': pressed,
+    }"
+  >
     <header class="flex justify-between items-center min-w-full">
       <div class="min-w-0 whitespace-nowrap text-ellipsis overflow-x-hidden">
         {{ board?.title }}
@@ -73,6 +84,7 @@ function handleClickText() {
 
     <Draggable
       v-if="board"
+      ref="draggableRef"
       :model-value="board.groups"
       class="flex items-start gap-2 flex-nowrap overflow-x-scroll scrollbar p-2"
       item-key="uuid"
