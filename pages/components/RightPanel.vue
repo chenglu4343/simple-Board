@@ -3,60 +3,26 @@ import { storeToRefs } from 'pinia'
 import Draggable from 'vuedraggable'
 import { useCurrentBoardStore } from '~/stores/useCurrentBoardStore'
 import { useLocalDataStore } from '~/stores/useLocalDataStore'
-import type { GroupType } from '~/types'
 
 const mainRef = ref<HTMLElement | null>(null)
 const draggableRef = ref<InstanceType<typeof Draggable> | null>(null)
+
 const { isHideCompleted, boardIds } = storeToRefs(useLocalDataStore())
-const { board } = storeToRefs(useCurrentBoardStore())
+const { board, groups } = storeToRefs(useCurrentBoardStore())
 const { addBoard } = useLocalDataStore()
-const { updateBoard } = useCurrentBoardStore()
+const {
+  updateBoard,
+  addGroup,
+  changeGroup,
+  insertLeftGroup,
+  insertRightGroup,
+  deleteGroup,
+} = useCurrentBoardStore()
+
 const { pressed } = useClickDrag({
   clickRef: mainRef,
   scrollElement: () => draggableRef.value?.$el,
 })
-
-function handleGroupsChange(groups: GroupType[]) {
-  board.value = {
-    ...board.value!,
-    groups,
-  }
-  pressed.value = false
-}
-
-function handleGroupChange(group: GroupType, index: number) {
-  handleGroupsChange([
-    ...board.value!.groups.slice(0, index),
-    group,
-    ...board.value!.groups.slice(index + 1),
-  ])
-}
-function handleAddGroup() {
-  handleGroupsChange([
-    ...board.value!.groups,
-    createGroup(),
-  ])
-}
-function handleInsertLeftGroup(currentIndex: number) {
-  handleGroupsChange([
-    ...board.value!.groups.slice(0, currentIndex),
-    createGroup(),
-    ...board.value!.groups.slice(currentIndex),
-  ])
-}
-function handleInsertRightGroup(currentIndex: number) {
-  handleGroupsChange([
-    ...board.value!.groups.slice(0, currentIndex + 1),
-    createGroup(),
-    ...board.value!.groups.slice(currentIndex + 1),
-  ])
-}
-function handleDeleteGroup(currentIndex: number) {
-  handleGroupsChange([
-    ...board.value!.groups.slice(0, currentIndex),
-    ...board.value!.groups.slice(currentIndex + 1),
-  ])
-}
 
 function handleClickText() {
   if (boardIds.value.length === 0)
@@ -85,10 +51,9 @@ function handleClickText() {
     <Draggable
       v-if="board"
       ref="draggableRef"
-      :model-value="board.groups"
+      v-model="groups"
       class="flex items-start gap-2 flex-nowrap overflow-x-scroll scrollbar p-2"
       item-key="uuid"
-      @update:model-value="handleGroupsChange"
     >
       <template #item="{ element, index }">
         <Group
@@ -98,14 +63,14 @@ function handleClickText() {
           task-list-group="list-group"
           class="min-w-60 max-w-60"
           @need-update-board="updateBoard"
-          @update:group="(val) => handleGroupChange(val, index)"
-          @insert-left-group="handleInsertLeftGroup(index)"
-          @insert-right-group="handleInsertRightGroup(index)"
-          @delete-group="handleDeleteGroup(index)"
+          @update:group="(val) => changeGroup(index, val)"
+          @insert-left-group="insertLeftGroup(index)"
+          @insert-right-group="insertRightGroup(index)"
+          @delete-group="deleteGroup(index)"
         />
       </template>
       <template #footer>
-        <NButton type="primary" @click="handleAddGroup">
+        <NButton type="primary" @click="addGroup">
           添加分组
         </NButton>
       </template>
