@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@vue-macros/nuxt',
     '@pinia/nuxt',
+    'nuxt-vitest',
   ],
   css: [
     'normalize.css',
