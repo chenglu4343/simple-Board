@@ -33,16 +33,10 @@ const taskArrModel = computed({
   set: (val) => {
     /** 1.进行了list内部的操作 */
     if (val.length === taskArrModel.value.length) {
-      const idMap = new Map<number, number>()
-      taskArrModel.value.forEach((item, index) => {
-        item.id! !== val[index].id! && idMap.set(item.id!, val[index].id!)
-      })
-      tasksArr.value = tasksArr.value.map((item) => {
-        const replaceId = idMap.get(item.id!)
-        if (replaceId)
-          return tasksArr.value.find(item => item.id === replaceId)!
-
-        return item
+      tasksArr.value = getSortedArr<Required<TaskType>>({
+        originArr: tasksArr.value as any,
+        sortedArr: val as any,
+        showingArr: taskArrModel.value as any,
       })
     }
     /** 其他task移动进入了当前lists */

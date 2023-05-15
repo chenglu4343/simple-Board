@@ -14,17 +14,9 @@ const boardArr = ref<BoardType[]>([])
 const boardArrModel = computed({
   get: () => boardArr.value,
   set: (val) => {
-    const idMap = new Map<number, number>()
-    boardArr.value.forEach((item, index) => {
-      idMap.set(item.id!, val[index].id!)
-    })
-
-    boardArr.value = boardArr.value.map((item) => {
-      const replaceId = idMap.get(item.id!)
-      if (replaceId)
-        return boardArr.value.find(item => item.id === replaceId)!
-
-      return item
+    boardArr.value = getSortedArr<Required<BoardType>>({
+      showingArr: boardArr.value as Required<BoardType>[],
+      sortedArr: val as Required<BoardType>[],
     })
     boardIds.value = boardArr.value.map(item => item.id!)
   },
