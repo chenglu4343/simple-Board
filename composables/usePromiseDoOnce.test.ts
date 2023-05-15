@@ -1,5 +1,4 @@
 import { describe, expect, it, vi } from 'vitest'
-import { usePromiseDoOnce } from './usePromiseDoOnce'
 
 describe('test usePromiseDoOnce', () => {
   it('call ok', async () => {

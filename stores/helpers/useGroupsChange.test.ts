@@ -1,7 +1,6 @@
-import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { useGroupsChange } from './useGroupsChange'
 import type { GroupType } from '~/types'
-import { createGroup } from '~/utils/createType'
 
 function useGroups(getValue: GroupType[] = []) {
   const innerValue = ref(getValue)
@@ -17,14 +16,6 @@ function useGroups(getValue: GroupType[] = []) {
     innerValue,
   }
 }
-
-beforeAll(() => {
-  vi.stubGlobal('createGroup', createGroup)
-})
-
-afterAll(() => {
-  vi.unstubAllGlobals()
-})
 
 describe('useGroupsChange', () => {
   it('should add group', () => {

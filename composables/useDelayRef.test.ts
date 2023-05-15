@@ -1,5 +1,4 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { useDelayRef } from './useDelayRef'
 
 beforeEach(() => {
   vi.useFakeTimers()

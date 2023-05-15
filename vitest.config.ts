@@ -1,19 +1,4 @@
-import { defineConfig } from 'vitest/config'
-import AutoImport from 'unplugin-auto-import/vite'
+import { defineVitestConfig } from 'nuxt-vitest/config'
 
-export default defineConfig({
-  resolve: {
-    alias: {
-      '~': '/',
-    },
-  },
-  plugins: [
-    AutoImport({
-      imports: [
-        'vue',
-        '@vueuse/core',
-      ],
-      dts: false,
-    }),
-  ],
+export default defineVitestConfig({
 })
