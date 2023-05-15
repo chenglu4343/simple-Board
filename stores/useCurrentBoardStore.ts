@@ -7,7 +7,7 @@ import { dbService } from '~/dexie/dbService'
 
 export const useCurrentBoardStore = defineStore('current-board', () => {
   const { currentBoardId: boardId } = storeToRefs(useLocalDataStore())
-  const currentBoard = ref<BoardType | null>(createList())
+  const currentBoard = ref<BoardType | null>(createBoard())
   /**
      * 存在同时变更board数据时(例如从一个group拖拽到另外一个group)，
      * 如果采取直接发送给dbService存储再使用updateBoard更新board数据，第二次变更拿到的并不是第一次变更之后的board数据

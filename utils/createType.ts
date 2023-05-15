@@ -1,11 +1,10 @@
 import { v4 } from 'uuid'
-import type { GroupType, ListType, TaskType } from '../types'
+import type { BoardType, GroupType, TaskType } from '../types'
 
-export function createList(title?: string): ListType {
+export function createBoard(title?: string): BoardType {
   return {
     title: title ?? '未命名',
     groups: [],
-    icon: 'list',
   }
 }
 
