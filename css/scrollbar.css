@@ -5,13 +5,6 @@
     --scrollbar-radius: 4px;
 }
 
-/* @-moz-document url-prefix() {
-  * {
-    scrollbar-color: $--scrollbar-track-color $--scrollbar-thumb-color !important;
-    scrollbar-width: thin !important;
-  }
-} */
-
 ::-webkit-scrollbar {
     width: var(--scrollbar-size);
     height: var(--scrollbar-size);
@@ -33,4 +26,10 @@
 
 ::-webkit-scrollbar-corner {
     background-color: var(--scrollbar-thumb-color);
+}
+
+/* firefox滚动条样式 */
+*{
+    scrollbar-color: var(--scrollbar-track-color) var(--scrollbar-thumb-color);
+    scrollbar-width: thin;
 }
