@@ -1,15 +1,4 @@
 {
-  "name": "simple-todo",
-  "private": true,
-  "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
-  },
   "dependencies": {
     "@antfu/eslint-config": "^0.38.4",
     "@iconify-json/ant-design": "^1.1.5",
@@ -38,7 +27,28 @@
   "devDependencies": {
     "@unocss/nuxt": "^0.51.4",
     "@vue-macros/nuxt": "^1.2.8",
+    "lint-staged": "^13.2.2",
     "nuxt": "^3.4.1",
+    "simple-git-hooks": "^2.8.1",
     "unplugin-vue-components": "^0.24.1"
+  },
+  "name": "simple-todo",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "postinstall": "nuxt prepare",
+    "preview": "nuxt preview"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx,vue,md}": [
+      "eslint --cache --fix"
+    ]
   }
 }
