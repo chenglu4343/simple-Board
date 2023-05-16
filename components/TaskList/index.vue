@@ -2,6 +2,7 @@
 import { storeToRefs } from 'pinia'
 import { array, number, string } from 'vue-types'
 import Draggable from 'vuedraggable'
+import { getInsertIndexAndItem, getRemovedId } from './helpers/getChangedArr'
 import { dbService } from '~/dexie/dbService'
 import { useLocalDataStore } from '~/stores/useLocalDataStore'
 import type { TaskType } from '~/types'
@@ -41,18 +42,15 @@ const taskArrModel = computed({
     }
     /** 其他task移动进入了当前lists */
     else if (val.length > taskArrModel.value.length) {
-      const newItemIndex = val.findIndex(item => !taskArrModel.value.find(item2 => item2.id === item.id))
-      if (newItemIndex === taskArrModel.value.length) {
-        tasksArr.value.push(val[newItemIndex])
-      }
-      else {
-        const insertIndex = tasksArr.value.findIndex(item => item.id === taskArrModel.value[newItemIndex].id!)
-        tasksArr.value.splice(insertIndex, 0, val[newItemIndex])
-      }
+      const { insertIndex, insertItem } = getInsertIndexAndItem<Required<TaskType>>(
+        tasksArr.value as any,
+        taskArrModel.value as any,
+        val as any)
+      tasksArr.value.splice(insertIndex, 0, insertItem)
     }
     /** 当前task被移除 */
     else if (val.length < taskArrModel.value.length) {
-      const removeId = taskArrModel.value.find(item => val.every(valItem => valItem.id !== item.id!))!.id!
+      const removeId = getRemovedId(taskArrModel.value as any, val as any)
       tasksArr.value = tasksArr.value.filter(item => item.id !== removeId)
     }
     emits('update:taskIds', tasksArr.value.map(item => item.id!))
